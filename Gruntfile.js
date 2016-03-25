@@ -45,7 +45,10 @@ module.exports = function(grunt) {
 			link = '<link rel="stylesheet" href="../macy-base.css" type="text/css" />',
 			jq = '<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"> </script>',
 			styles = "body.NavAppHomePage #bd {width: 960px !important;border: none !important;line-height: 0px !important;}#globalContentContainer .row div {padding-right: 0;}",
-			columns = [], isRowEven = [], imgNames = [], imgSizes = [], floaterSize = null, floaterName, $rowDiv, $innerDiv, $innerUl, $img, i, j, k, sum = 0, rowLen, temp, isExtraWide = false;
+			columns = [], isRowEven = [], imgNames = [], imgSizes = [],
+			floaterSize = null, floaterName,
+			$rowDiv, $innerDiv, $innerUl, $img,
+			i, j, k, sum = 0, rowLen, imgLen, temp, isExtraWide = false, isBlock = false;
 
 		$.root().append($html);
 		$html.append($head, $body);
@@ -64,6 +67,7 @@ module.exports = function(grunt) {
 				}
 			}
 		});
+		imgLen = imgSizes.length;
 
 		// floater image code
 		if(grunt.option("floater")) {
@@ -82,7 +86,8 @@ module.exports = function(grunt) {
 			}
 		}
 
-		for(i = 0, j = 0, k = 1; i < imgSizes.length; i++, k++) {
+		// get rows and columns
+		for(i = 0, j = 0, k = 1; i < imgLen; i++, k++) {
 			sum += imgSizes[i].width;
 			if(sum >= 960) {
 				columns[j++] = k;
@@ -92,6 +97,7 @@ module.exports = function(grunt) {
 		}
 		rowLen = columns.length;
 
+		// check what type of foundation class can be applied for each row : "row-column pair" or "block_grid"
 		for(i = 0, k = 0; i < rowLen; i++) {
 inner:		for(j = 0; j < columns[i]; j++) {
 				temp = imgSizes[k + j].width;
@@ -106,8 +112,10 @@ inner:		for(j = 0; j < columns[i]; j++) {
 			k += columns[i];
 		}
 
+		// generate html and apply foundation
 		for(i = 0, k = 0; i < rowLen; i++) {
 			if(isRowEven[i]) {
+				// apply row-column classes
 				$rowDiv = $('<div class="row" data-row-type="row-' + (i + 1) + '-"/>');
 				for(j = 0; j < columns[i]; j++, k++) {
 					temp = imgSizes[k].width;
@@ -123,14 +131,13 @@ inner:		for(j = 0; j < columns[i]; j++) {
 					if(temp > 960) {
 						$img.attr("class", "xtraWideImg");
 						isExtraWide = true;
-					} else {
-						isExtraWide = false;
 					}
 					$innerDiv.append($img);
 					$rowDiv.append($innerDiv);
 				}
 			} else {
-				$style.append(grunt.file.exists("assets/block_style.txt") ? grunt.file.read("assets/block_style.txt") : "");
+				// apply block_grid class
+				isBlock = true;
 				$rowDiv = $('<div class="row collapse block_grid" data-row-type="row-' + (i + 1) + '-"/>');
 				$innerUl = $('<ul class="small-block-grid-' + columns[i] + '"/>');
 				$rowDiv.append($innerUl);
@@ -146,10 +153,13 @@ inner:		for(j = 0; j < columns[i]; j++) {
 					$innerUl.append("<li>" + $img + "</li>");
 				}
 			}
-			if(isExtraWide) {
-				$style.append(".xtraWideImg {max-width: none !important;margin-left: -50% !important;}");
-			}
 			$body.append($rowDiv);
+		}
+		if(isExtraWide) {
+			$style.append(".xtraWideImg {max-width: none !important;margin-left: -50% !important;}");
+		}
+		if(isBlock) {
+			$style.append(grunt.file.exists("assets/block_style.txt") ? grunt.file.read("assets/block_style.txt") : "");
 		}
 	});
 
