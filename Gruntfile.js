@@ -30,16 +30,6 @@ module.exports = function(grunt) {
 			grunt.log.error("ERROR: Folder does not exist!" ["red"]);
 			return false;
 		}
-		if(!grunt.option("columns")) {
-			grunt.log.error("ERROR: Columns parameter missing!" ["red"]);
-			return false;
-		}
-		if(/\d{2}/.test(grunt.option("columns"))) {
-			if(!grunt.option("force")) {
-				grunt.fail.warn("Did you miss a comma in?");
-				return false;
-			}
-		}
 	});
 
 	grunt.registerTask("generate", function() {
@@ -47,17 +37,15 @@ module.exports = function(grunt) {
 
 		$ = require("cheerio").load("", {xmlMode: true});
 
-		var rows = grunt.option("columns").split(","),
-			rowLen = rows.length,
-			sizeOf = require("image-size"),
+		var sizeOf = require("image-size"),
 			$html = $("<html/>"),
 			$head = $("<head/>"),
 			$style = $("<style/>"),
-			$body = $('<body style="width: 960px"/>'),
+			$body = $('<body style="width: 960px; margin: auto"/>'),
 			link = '<link rel="stylesheet" href="../macy-base.css" type="text/css" />',
 			jq = '<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"> </script>',
 			styles = "body.NavAppHomePage #bd {width: 960px !important;border: none !important;line-height: 0px !important;}#globalContentContainer .row div {padding-right: 0;}",
-			columns = [], isEven = [], imgNames = [], imgSizes = [], floaterSize = null, floaterName, i, j, k, $rowDiv, $innerDiv, $innerUl, $img;
+			columns = [], isRowEven = [], imgNames = [], imgSizes = [], floaterSize = null, floaterName, $rowDiv, $innerDiv, $innerUl, $img, i, j, k, sum = 0, rowLen;
 
 		$.root().append($html);
 		$html.append($head, $body);
@@ -94,19 +82,28 @@ module.exports = function(grunt) {
 			}
 		}
 
+		for(i = 0, j = 0, k = 1; i < imgSizes.length; i++, k++) {
+			sum += imgSizes[i].width;
+			if(sum >= 960) {
+				columns[j++] = k;
+				sum = 0;
+				k = 0;
+			}
+		}
+		rowLen = columns.length;
+
 		for(i = 0, k = 0; i < rowLen; i++) {
-			columns[i] = parseInt(rows[i], 10);
 inner:		for(j = 0; j < columns[i]; j++) {
 				if(imgSizes[k + j].width % 60 !== 0) {
 					break inner;
 				}
 			}
-			isEven[i] = j === columns[i] ? true : false;
+			isRowEven[i] = j === columns[i] ? true : false;
 			k += columns[i];
 		}
 
 		for(i = 0, k = 0; i < rowLen; i++) {
-			if(isEven[i]) {
+			if(isRowEven[i]) {
 				$rowDiv = $('<div class="row" data-row-type="row-' + (i + 1) + '-"/>');
 				for(j = 0; j < columns[i]; j++, k++) {
 					$innerDiv = $('<div class="small-' + (imgSizes[k].width / 60) + ' column"/>');
