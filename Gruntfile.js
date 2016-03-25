@@ -45,7 +45,7 @@ module.exports = function(grunt) {
 			link = '<link rel="stylesheet" href="../macy-base.css" type="text/css" />',
 			jq = '<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"> </script>',
 			styles = "body.NavAppHomePage #bd {width: 960px !important;border: none !important;line-height: 0px !important;}#globalContentContainer .row div {padding-right: 0;}",
-			columns = [], isRowEven = [], imgNames = [], imgSizes = [], floaterSize = null, floaterName, $rowDiv, $innerDiv, $innerUl, $img, i, j, k, sum = 0, rowLen, temp;
+			columns = [], isRowEven = [], imgNames = [], imgSizes = [], floaterSize = null, floaterName, $rowDiv, $innerDiv, $innerUl, $img, i, j, k, sum = 0, rowLen, temp, isExtraWide = false;
 
 		$.root().append($html);
 		$html.append($head, $body);
@@ -110,7 +110,8 @@ inner:		for(j = 0; j < columns[i]; j++) {
 			if(isRowEven[i]) {
 				$rowDiv = $('<div class="row" data-row-type="row-' + (i + 1) + '-"/>');
 				for(j = 0; j < columns[i]; j++, k++) {
-					$innerDiv = $('<div class="small-' + (imgSizes[k].width <= 960 ? imgSizes[k].width / 60 : 16) + ' column"/>');
+					temp = imgSizes[k].width;
+					$innerDiv = $('<div class="small-' + (temp <= 960 ? temp / 60 : 16) + ' column"/>');
 					$img = $("<img/>");
 					$img.attr({
 						"src" : "images/" + imgNames[k],
@@ -119,6 +120,12 @@ inner:		for(j = 0; j < columns[i]; j++) {
 						"usemap" : "#" + folder + "_map" + k,
 						"alt" : ""
 					});
+					if(temp > 960) {
+						$img.attr("class", "xtraWideImg");
+						isExtraWide = true;
+					} else {
+						isExtraWide = false;
+					}
 					$innerDiv.append($img);
 					$rowDiv.append($innerDiv);
 				}
@@ -138,6 +145,9 @@ inner:		for(j = 0; j < columns[i]; j++) {
 					});
 					$innerUl.append("<li>" + $img + "</li>");
 				}
+			}
+			if(isExtraWide) {
+				$style.append(".xtraWideImg {max-width: none !important;margin-left: -50% !important;}");
 			}
 			$body.append($rowDiv);
 		}
