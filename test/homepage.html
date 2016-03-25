@@ -1,0 +1,256 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="../macy-base.css" type="text/css" />
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js">
+		</script>
+		<style>
+			body.NavAppHomePage #bd {
+				width: 960px !important;
+				border: none !important;
+				line-height: 0px !important;
+			}
+			
+			#globalContentContainer .row div {
+				padding-right: 0;
+			}
+			
+			#scrollingSideAd {
+				z-index: 9999;
+				position: fixed;
+				top: 200px;
+				right: 22px;
+				display: none;
+			}
+			
+			@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+				#scrollingSideAd {
+					display: none !important;
+				}
+			}
+			
+			.block_grid ul {
+				margin: 0px!important;
+				padding: 0px !important
+			}
+			
+			.block_grid ul li {
+				margin: 0px!important;
+				padding: 0px !important;
+				width: auto !important;
+			}
+			
+			.block_grid ul {
+				margin: 0px!important;
+				padding: 0px !important
+			}
+			
+			.block_grid ul li {
+				margin: 0px!important;
+				padding: 0px !important;
+				width: auto !important;
+			}
+			
+			.block_grid ul {
+				margin: 0px!important;
+				padding: 0px !important
+			}
+			
+			.block_grid ul li {
+				margin: 0px!important;
+				padding: 0px !important;
+				width: auto !important;
+			}
+			
+			.block_grid ul {
+				margin: 0px!important;
+				padding: 0px !important
+			}
+			
+			.block_grid ul li {
+				margin: 0px!important;
+				padding: 0px !important;
+				width: auto !important;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function() {
+				var isAdClosed = false,
+					$ad = $("#scrollingSideAd");
+				$(window).scroll(function() {
+					($(this).scrollTop() > 80 && !isAdClosed) ? $ad.fadeIn(): $ad.fadeOut();
+				});
+				$("#scrollingSideAdMap").find("area").click(function() {
+					$ad.hide();
+					isAdClosed = true;
+				})
+			});
+		</script>
+	</head>
+	<body style="width: 960px">
+		<div id="scrollingSideAd">
+			<img id="floatingImage" usemap="#scrollingSideAdMap" border="0" alt="" src="images/floater.gif" width="234" height="358" />
+		</div>
+		<map name="scrollingSideAdMap" id="scrollingSideAdMap">
+			<area shape="circle" coords="215,14,14" alt="close" />
+		</map>
+		<div class="row" data-row-type="row-1-">
+			<div class="small-16 column">
+				<img src="images/C6030042_01.png" width="960" height="88" usemap="#test_map0" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-2-">
+			<div class="small-16 column">
+				<img src="images/C6030042_02.png" width="960" height="110" usemap="#test_map1" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-3-">
+			<div class="small-11 column">
+				<img src="images/C6030042_03.jpg" width="660" height="505" usemap="#test_map2" alt="" />
+			</div>
+			<div class="small-5 column">
+				<img src="images/C6030042_04.jpg" width="300" height="505" usemap="#test_map3" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-4-">
+			<div class="small-16 column">
+				<img src="images/C6030042_05.gif" width="960" height="90" usemap="#test_map4" alt="" />
+			</div>
+		</div>
+		<div class="row collapse block_grid" data-row-type="row-5-">
+			<ul class="small-block-grid-3">
+				<li>
+					<img src="images/C6030042_06.jpg" width="320" height="251" usemap="#test_map5" alt="" />
+				</li>
+				<li>
+					<img src="images/C6030042_07.jpg" width="320" height="251" usemap="#test_map6" alt="" />
+				</li>
+				<li>
+					<img src="images/C6030042_08.jpg" width="320" height="251" usemap="#test_map7" alt="" />
+				</li>
+			</ul>
+		</div>
+		<div class="row collapse block_grid" data-row-type="row-6-">
+			<ul class="small-block-grid-3">
+				<li>
+					<img src="images/C6030042_09.jpg" width="320" height="291" usemap="#test_map8" alt="" />
+				</li>
+				<li>
+					<img src="images/C6030042_10.jpg" width="320" height="291" usemap="#test_map9" alt="" />
+				</li>
+				<li>
+					<img src="images/C6030042_11.jpg" width="320" height="291" usemap="#test_map10" alt="" />
+				</li>
+			</ul>
+		</div>
+		<div class="row collapse block_grid" data-row-type="row-7-">
+			<ul class="small-block-grid-3">
+				<li>
+					<img src="images/C6030042_12.jpg" width="320" height="381" usemap="#test_map11" alt="" />
+				</li>
+				<li>
+					<img src="images/C6030042_13.gif" width="320" height="381" usemap="#test_map12" alt="" />
+				</li>
+				<li>
+					<img src="images/C6030042_14.gif" width="320" height="381" usemap="#test_map13" alt="" />
+				</li>
+			</ul>
+		</div>
+		<div class="row" data-row-type="row-8-">
+			<div class="small-16 column">
+				<img src="images/C6030042_15.png" width="960" height="104" usemap="#test_map14" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-9-">
+			<div class="small-8 column">
+				<img src="images/C6030042_16.jpg" width="480" height="545" usemap="#test_map15" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6030042_17.jpg" width="480" height="545" usemap="#test_map16" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-10-">
+			<div class="small-8 column">
+				<img src="images/C6030042_18.jpg" width="480" height="543" usemap="#test_map17" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6030042_19.jpg" width="480" height="543" usemap="#test_map18" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-11-">
+			<div class="small-8 column">
+				<img src="images/C6030042_20.jpg" width="480" height="569" usemap="#test_map19" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6030042_21.jpg" width="480" height="569" usemap="#test_map20" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-12-">
+			<div class="small-16 column">
+				<img src="images/C6030042_22.png" width="960" height="34" usemap="#test_map21" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-13-">
+			<div class="small-16 column">
+				<img src="images/C6030042_23.jpg" width="960" height="512" usemap="#test_map22" alt="" />
+			</div>
+		</div>
+		<div class="row collapse block_grid" data-row-type="row-14-">
+			<ul class="small-block-grid-1">
+				<li>
+					<img src="images/C6030042_24.jpg" width="1764" height="487" usemap="#test_map23" alt="" />
+				</li>
+			</ul>
+		</div>
+		<div class="row" data-row-type="row-15-">
+			<div class="small-16 column">
+				<img src="images/C6030042_25.jpg" width="960" height="548" usemap="#test_map24" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-16-">
+			<div class="small-16 column">
+				<img src="images/C6030042_26.png" width="960" height="34" usemap="#test_map25" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-17-">
+			<div class="small-16 column">
+				<img src="images/C6030042_27.jpg" width="960" height="516" usemap="#test_map26" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-18-">
+			<div class="small-16 column">
+				<img src="images/C6030042_28.png" width="960" height="34" usemap="#test_map27" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-19-">
+			<div class="small-16 column">
+				<img src="images/C6030042_29.jpg" width="960" height="798" usemap="#test_map28" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-20-">
+			<div class="small-16 column">
+				<img src="images/C6030042_30.png" width="960" height="34" usemap="#test_map29" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-21-">
+			<div class="small-8 column">
+				<img src="images/C6030042_31.jpg" width="480" height="374" usemap="#test_map30" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6030042_32.jpg" width="480" height="373" usemap="#test_map31" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-22-">
+			<div class="small-8 column">
+				<img src="images/C6030042_33.jpg" width="480" height="353" usemap="#test_map32" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6030042_34.jpg" width="480" height="352" usemap="#test_map33" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-23-">
+			<div class="small-16 column">
+				<img src="images/C6030043_35.jpg" width="960" height="107" usemap="#test_map34" alt="" />
+			</div>
+		</div>
+	</body>
+</html>

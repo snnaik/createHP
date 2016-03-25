@@ -1,0 +1,268 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="../macy-base.css" type="text/css" />
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js">
+		</script>
+		<style>
+			body.NavAppHomePage #bd {
+				width: 960px !important;
+				border: none !important;
+				line-height: 0px !important;
+			}
+			
+			#globalContentContainer .row div {
+				padding-right: 0;
+			}
+			
+			#scrollingSideAd {
+				z-index: 9999;
+				position: fixed;
+				top: 200px;
+				right: 22px;
+				display: none;
+			}
+			
+			@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+				#scrollingSideAd {
+					display: none !important;
+				}
+			}
+			
+			.block_grid ul {
+				margin: 0px!important;
+				padding: 0px !important
+			}
+			
+			.block_grid ul li {
+				margin: 0px!important;
+				padding: 0px !important;
+				width: auto !important;
+			}
+			
+			.block_grid ul {
+				margin: 0px!important;
+				padding: 0px !important
+			}
+			
+			.block_grid ul li {
+				margin: 0px!important;
+				padding: 0px !important;
+				width: auto !important;
+			}
+			
+			.block_grid ul {
+				margin: 0px!important;
+				padding: 0px !important
+			}
+			
+			.block_grid ul li {
+				margin: 0px!important;
+				padding: 0px !important;
+				width: auto !important;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function() {
+				var isAdClosed = false,
+					$ad = $("#scrollingSideAd");
+				$(window).scroll(function() {
+					($(this).scrollTop() > 80 && !isAdClosed) ? $ad.fadeIn(): $ad.fadeOut();
+				});
+				$("#scrollingSideAdMap").find("area").click(function() {
+					$ad.hide();
+					isAdClosed = true;
+				})
+			});
+		</script>
+	</head>
+	<body style="width: 960px">
+		<div id="scrollingSideAd">
+			<img id="floatingImage" usemap="#scrollingSideAdMap" border="0" alt="" src="images/floater.gif" width="210" height="287" />
+		</div>
+		<map name="scrollingSideAdMap" id="scrollingSideAdMap">
+			<area shape="circle" coords="215,14,14" alt="close" />
+		</map>
+		<div class="row" data-row-type="row-1-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_01.gif" width="960" height="75" usemap="#32716_map0" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-2-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_02.gif" width="960" height="119" usemap="#32716_map1" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-3-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_03.gif" width="960" height="430" usemap="#32716_map2" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-4-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_04.gif" width="960" height="89" usemap="#32716_map3" alt="" />
+			</div>
+		</div>
+		<div class="row collapse block_grid" data-row-type="row-5-">
+			<ul class="small-block-grid-3">
+				<li>
+					<img src="images/C6020065_101_05.jpg" width="320" height="258" usemap="#32716_map4" alt="" />
+				</li>
+				<li>
+					<img src="images/C6020065_101_06.jpg" width="320" height="258" usemap="#32716_map5" alt="" />
+				</li>
+				<li>
+					<img src="images/C6020065_101_07.jpg" width="320" height="258" usemap="#32716_map6" alt="" />
+				</li>
+			</ul>
+		</div>
+		<div class="row collapse block_grid" data-row-type="row-6-">
+			<ul class="small-block-grid-3">
+				<li>
+					<img src="images/C6020065_101_08.jpg" width="320" height="257" usemap="#32716_map7" alt="" />
+				</li>
+				<li>
+					<img src="images/C6020065_101_09.jpg" width="320" height="257" usemap="#32716_map8" alt="" />
+				</li>
+				<li>
+					<img src="images/C6020065_101_10.jpg" width="320" height="257" usemap="#32716_map9" alt="" />
+				</li>
+			</ul>
+		</div>
+		<div class="row collapse block_grid" data-row-type="row-7-">
+			<ul class="small-block-grid-3">
+				<li>
+					<img src="images/C6020065_101_11.jpg" width="320" height="385" usemap="#32716_map10" alt="" />
+				</li>
+				<li>
+					<img src="images/C6020065_101_12.gif" width="320" height="385" usemap="#32716_map11" alt="" />
+				</li>
+				<li>
+					<img src="images/C6020065_101_13.jpg" width="320" height="385" usemap="#32716_map12" alt="" />
+				</li>
+			</ul>
+		</div>
+		<div class="row" data-row-type="row-8-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_14.gif" width="960" height="67" usemap="#32716_map13" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-9-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_15.jpg" width="960" height="402" usemap="#32716_map14" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-10-">
+			<div class="small-8 column">
+				<img src="images/C6020065_101_16.jpg" width="480" height="520" usemap="#32716_map15" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6020065_101_17.jpg" width="480" height="520" usemap="#32716_map16" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-11-">
+			<div class="small-8 column">
+				<img src="images/C6020065_101_18.jpg" width="480" height="520" usemap="#32716_map17" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6020065_101_19.jpg" width="480" height="520" usemap="#32716_map18" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-12-">
+			<div class="small-8 column">
+				<img src="images/C6020065_101_20.jpg" width="480" height="590" usemap="#32716_map19" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6020065_101_21.jpg" width="480" height="590" usemap="#32716_map20" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-13-">
+			<div class="small-8 column">
+				<img src="images/C6020065_101_22.jpg" width="480" height="520" usemap="#32716_map21" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6020065_101_23.jpg" width="480" height="520" usemap="#32716_map22" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-14-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_24.jpg" width="960" height="470" usemap="#32716_map23" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-15-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_25.jpg" width="960" height="320" usemap="#32716_map24" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-16-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_26.jpg" width="960" height="450" usemap="#32716_map25" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-17-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_27.jpg" width="960" height="730" usemap="#32716_map26" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-18-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_28.jpg" width="960" height="750" usemap="#32716_map27" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-19-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_29.gif" width="960" height="50" usemap="#32716_map28" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-20-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_30.jpg" width="960" height="560" usemap="#32716_map29" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-21-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_31.jpg" width="960" height="430" usemap="#32716_map30" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-22-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_32.gif" width="960" height="65" usemap="#32716_map31" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-23-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_33.jpg" width="960" height="440" usemap="#32716_map32" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-24-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_34.jpg" width="960" height="380" usemap="#32716_map33" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-25-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_35.jpg" width="960" height="550" usemap="#32716_map34" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-26-">
+			<div class="small-16 column">
+				<img src="images/C6020065_101_36.gif" width="960" height="70" usemap="#32716_map35" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-27-">
+			<div class="small-8 column">
+				<img src="images/C6020065_101_37.jpg" width="480" height="358" usemap="#32716_map36" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6020065_101_38.jpg" width="480" height="358" usemap="#32716_map37" alt="" />
+			</div>
+		</div>
+		<div class="row" data-row-type="row-28-">
+			<div class="small-8 column">
+				<img src="images/C6020065_101_39.jpg" width="480" height="352" usemap="#32716_map38" alt="" />
+			</div>
+			<div class="small-8 column">
+				<img src="images/C6020065_101_40.jpg" width="480" height="352" usemap="#32716_map39" alt="" />
+			</div>
+		</div>
+	</body>
+</html>

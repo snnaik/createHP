@@ -1,0 +1,10 @@
+.block_grid ul {
+	margin: 0px!important;
+	padding: 0px !important
+}
+
+.block_grid ul li {
+	margin: 0px!important;
+	padding: 0px !important;
+	width: auto !important;
+}
