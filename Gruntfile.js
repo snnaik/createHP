@@ -45,7 +45,7 @@ module.exports = function(grunt) {
 			link = '<link rel="stylesheet" href="../macy-base.css" type="text/css" />',
 			jq = '<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"> </script>',
 			styles = "body.NavAppHomePage #bd {width: 960px !important;border: none !important;line-height: 0px !important;}#globalContentContainer .row div {padding-right: 0;}",
-			columns = [], isRowEven = [], imgNames = [], imgSizes = [], floaterSize = null, floaterName, $rowDiv, $innerDiv, $innerUl, $img, i, j, k, sum = 0, rowLen;
+			columns = [], isRowEven = [], imgNames = [], imgSizes = [], floaterSize = null, floaterName, $rowDiv, $innerDiv, $innerUl, $img, i, j, k, sum = 0, rowLen, temp;
 
 		$.root().append($html);
 		$html.append($head, $body);
@@ -94,7 +94,11 @@ module.exports = function(grunt) {
 
 		for(i = 0, k = 0; i < rowLen; i++) {
 inner:		for(j = 0; j < columns[i]; j++) {
-				if(imgSizes[k + j].width % 60 !== 0) {
+				temp = imgSizes[k + j].width;
+				if(temp > 960) {
+					j++;
+					break inner;
+				} else if(temp % 60 !== 0) {
 					break inner;
 				}
 			}
@@ -106,7 +110,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 			if(isRowEven[i]) {
 				$rowDiv = $('<div class="row" data-row-type="row-' + (i + 1) + '-"/>');
 				for(j = 0; j < columns[i]; j++, k++) {
-					$innerDiv = $('<div class="small-' + (imgSizes[k].width / 60) + ' column"/>');
+					$innerDiv = $('<div class="small-' + (imgSizes[k].width <= 960 ? imgSizes[k].width / 60 : 16) + ' column"/>');
 					$img = $("<img/>");
 					$img.attr({
 						"src" : "images/" + imgNames[k],
