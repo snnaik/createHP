@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.registerTask("default", ["check", "generate", "execute"]);
+	grunt.registerTask("default", ["check", "build", "execute"]);
 
 	grunt.registerTask("check", function() {
 		if(!grunt.option("folder")) {
@@ -30,9 +30,15 @@ module.exports = function(grunt) {
 			grunt.log.error("ERROR: Folder does not exist!" ["red"]);
 			return false;
 		}
+		if(grunt.option("alt")) {
+			if(!grunt.file.exists(folder + "/altsheet.xlsx")) {
+				grunt.log.error("ERROR: 'alt' parameter set but no 'altsheet.xlsx' found!" ["red"]);
+				return false;
+			}
+		}
 	});
 
-	grunt.registerTask("generate", function() {
+	grunt.registerTask("build", function() {
 		grunt.task.requires("check");
 
 		$ = require("cheerio").load("", {xmlMode: true});
@@ -45,7 +51,7 @@ module.exports = function(grunt) {
 			link = '<link rel="stylesheet" href="../macy-base.css" type="text/css" />',
 			jq = '<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"> </script>',
 			styles = "body.NavAppHomePage #bd {width: 960px !important;border: none !important;line-height: 0px !important;}#globalContentContainer .row div {padding-right: 0;}",
-			columns = [], isRowEven = [], imgNames = [], imgSizes = [],
+			columns = [], isRowEven = [], imgNames = [], imgSizes = [], alts = [],
 			floaterSize = null, floaterName,
 			$rowDiv, $innerDiv, $innerUl, $img,
 			i, j, k, sum = 0, rowLen, imgLen, temp, isExtraWide = false, isBlock = false;
@@ -112,7 +118,18 @@ inner:		for(j = 0; j < columns[i]; j++) {
 			k += columns[i];
 		}
 
-		// generate html and apply foundation
+		// get excel data
+		if(grunt.option("alt")) {
+			var sheet = require("xlsx").readFile(folder + "/altsheet.xlsx").Sheets["Sheet1"];
+
+			for(i = 0; i < imgLen; i++) {
+				if(imgNames[i] === sheet["A" + (i + 1)].v) {
+					alts[i] = sheet["B" + (i + 1)].v;
+				}
+			}
+		}
+
+		// build html and apply foundation
 		for(i = 0, k = 0; i < rowLen; i++) {
 			if(isRowEven[i]) {
 				// apply row-column classes
@@ -126,7 +143,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 						"width" : imgSizes[k].width,
 						"height" : imgSizes[k].height,
 						"usemap" : "#" + folder + "_map" + k,
-						"alt" : ""
+						"alt" : alts[k]
 					});
 					if(temp > 960) {
 						$img.attr("class", "xtraWideImg");
@@ -148,7 +165,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 						"width" : imgSizes[k].width,
 						"height" : imgSizes[k].height,
 						"usemap" : "#" + folder + "_map" + k,
-						"alt" : ""
+						"alt" : alts[k]
 					});
 					$innerUl.append("<li>" + $img + "</li>");
 				}
@@ -164,7 +181,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 	});
 
 	grunt.registerTask("execute", function() {
-		grunt.task.requires("generate");
+		grunt.task.requires("build");
 		grunt.file.write(folder + "/homepage.html", $.html());
 		grunt.loadNpmTasks('grunt-prettify');
 		grunt.task.run('prettify');
