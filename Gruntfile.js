@@ -229,23 +229,10 @@ inner:		for(j = 0; j < columns[i]; j++) {
 					$this1.attr("href", "${baseUrl" + href + (~href.indexOf("?") ? "&" : "?") + cm + ":" + alt);
 				} else if(href === "standard") {
 					$this1.attr("href", SL[alt.replace(/\s/g, "")] + cm + SL[alt] + ":" + alt);
-					console.log($this1.attr("href"));
+				} else if(/www(1)?.macys.com/.test(href)) {
+					$this1.attr("href", "${baseUrl}" + href.substring(href.indexOf(".com") + 4));
 				}
 			});
 		});
-
-
-		/*$("area").each(function() {
-
-			var isBaseUrl = /(http(s)?:\/\/(?=.macys.com))|(www(?=.macys.com))|(www1(?=.macys.com))/.test(href);
-
-			if(isBaseUrl) {
-				$this.attr("href", href.replace(/(http(s)?:\/\/)?(www)?1?.?macys.com/, "${baseUrl}"));
-				var temp = $(this).attr("href");
-				href.indexOf('?') === -1 ? $(this).attr('href', temp +'?' + cm + ':'+ alt) : $(this).attr('href', temp +'&' + cm + ':'+ alt);
-			}
-
-		});*/
 	});
-
 };
