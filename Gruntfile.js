@@ -201,13 +201,14 @@ inner:		for(j = 0; j < columns[i]; j++) {
 			var $this0 = $(this),
 				map = $this0.attr("name"),
 				row = $this0.data("row-num"),
-				cm = "cm_re=${hpDate}-_-HOMEPAGE_INCLUDE_1_" + row + "-_-CATEGORY%20--%205125%20--%20";
+				cm_re = "cm_re";// "cm_re=${hpDate}-_-HOMEPAGE_INCLUDE_1_" + row + "-_-CATEGORY%20--%205125%20--%20";
 
 			$this0.children().each(function() {
 				var $this1 = $(this),
 					href = $this1.attr("href"),
 					alt = $this1.attr("alt"),
-					hrefStr, hrefLen, js1, js2;
+					cm = cm_re + ":" + alt,
+					newHref, hrefStr, js1, js2;
 
 				if(typeof href === "undefined" || href === "#") {
 					grunt.log.writeln("WARNING: 'href' empty for area with coords : " ["yellow"] + $this1.attr("coords") ["yellow"] + ". Skipping current tag." ["yellow"]);
@@ -218,21 +219,43 @@ inner:		for(j = 0; j < columns[i]; j++) {
 					return true;
 				}
 
-				if(/^\d+$/.test(href)) {
+				if(/^\d+$/.test(href)) { // all digits
 					hrefStr = href.toString();
-					hrefLen = hrefStr.length;
 					js1 = "javascript:pop('${baseUrl}/popup.ognc?popupID=";
-					js2 = ":exclusions and details','myDynaPop','scrollbars=yes,width=365,height=600')";
+					js2 = "','myDynaPop','scrollbars=yes,width=365,height=600')";
 
-					$this1.attr("href", hrefLen <= 5 ? SL.catUrl + href + "&" + cm + hrefStr + ":" + alt : js1 + hrefStr + "&" + cm + js2);
-				} else if(/^\//.test(href)) {
-					$this1.attr("href", "${baseUrl" + href + (~href.indexOf("?") ? "&" : "?") + cm + ":" + alt);
+					newHref = hrefStr.length <= 5 ? SL.catUrl + href + "&" + cm_re + hrefStr + ":" + alt : js1 + hrefStr + "&" + cm + js2;
+				} else if(/^\//.test(href)) { // begins with /
+					newHref = hasHash() || "${baseUrl}" + href + (~href.indexOf("?") ? "&" : "?") + cm;
 				} else if(href === "standard") {
-					$this1.attr("href", SL[alt.replace(/\s/g, "")] + cm + SL[alt] + ":" + alt);
+					newHref = SL[alt.replace(/\s/g, "")] + cm_re + SL[alt] + ":" + alt;
 				} else if(/www(1)?.macys.com/.test(href)) {
-					$this1.attr("href", "${baseUrl}" + href.substring(href.indexOf(".com") + 4));
+					newHref = "${baseUrl}" + href.substring(href.indexOf(".com") + 4) + (~href.indexOf("?") ? "&" : "?") + cm;
+				} else {
+					newHref = href + (~href.indexOf("?") ? "&" : "?") + cm;
+				}
+
+				$this1.attr("href", newHref);
+				console.log(newHref);
+
+				function hasHash() {
+					var hashIndex, queIndex, index, temp;
+
+					if(~(hashIndex = href.indexOf("#"))) {
+						if(~(queIndex = href.indexOf("?"))) {
+							index = queIndex + 1;
+							temp = cm + "&";
+						} else {
+							index = hashIndex;
+							temp = "?" + cm;
+						}
+						return "${baseUrl}" + href.substring(0, index) + temp + href.substring(index);
+					} else {
+						return false;
+					}
 				}
 			});
 		});
+		grunt.file.write(folder + "/updated.html", $.html());
 	});
 };
