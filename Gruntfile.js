@@ -16,30 +16,16 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask("template", ["check", "build", "execute"]);
-
-	grunt.registerTask("reformat", ["check", "update"]);
+	grunt.registerTask("reformat", ["check", "update", "clean"]);
 
 	grunt.registerTask("check", function() {
-		if(!grunt.option("folder")) {
-			grunt.log.error("ERROR: Folder parameter missing!" ["red"]);
-			return false;
-		} else {
-			folder = grunt.option("folder").toString();
-		}
-		if(!grunt.file.exists(folder)) {
-			grunt.log.error("ERROR: Folder does not exist!" ["red"]);
-			return false;
-		}
-		if(grunt.option("alt")) {
-			if(!grunt.file.exists(folder + "/altsheet.xlsx")) {
-				grunt.log.error("ERROR: 'alt' parameter set but no 'altsheet.xlsx' found!" ["red"]);
-				return false;
-			}
-		}
+		!grunt.option("folder") ? grunt.fatal("Folder parameter missing!\n") : folder = grunt.option("folder").toString();
+		!grunt.file.exists(folder) && grunt.fatal("Folder does not exist!\n");
+		grunt.option("alt") && !grunt.file.exists(folder + "/altsheet.xlsx") && grunt.fatal("'alt' parameter set but no 'altsheet.xlsx' found!\n");
 	});
 
 	grunt.registerTask("build", function() {
-		grunt.task.requires("check");
+		this.requires("check");
 
 		{ // variables
 			$ = cheerio.load("");
@@ -99,11 +85,17 @@ module.exports = function(grunt) {
 			for(i = 0, j = 0, k = 1; i < imgLen; i++, k++) {
 				sum += imgSizes[i].width;
 				if(sum >= 960) {
+					if(k > 1 && sum > 960) {
+						temp = "";
+						for(j = i - k + 1; j <= i; j++) temp += ", " + imgNames[j];
+						grunt.log.writeln("One or more images not sliced correctly! [" + temp.substring(2) ["yellow"] + "]");
+					}
 					columns[j++] = k;
 					sum = 0;
 					k = 0;
 				}
 			}
+			sum !== 0 && grunt.fatal("Last image does not fill the full width of the page!" + "\nAre you missing one or more images?\n" ["yellow"]);
 			rowLen = columns.length;
 		}
 
@@ -126,9 +118,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 		if(grunt.option("alt")) {
 			var sheet = require("xlsx").readFile(folder + "/altsheet.xlsx").Sheets["Sheet1"];
 
-			for(i = 0; i < imgLen; i++) {
-				alts[i] = imgNames[i] === sheet["A" + (i + 1)].v ? sheet["B" + (i + 1)].v : "";
-			}
+			for(i = 0; i < imgLen; i++) alts[i] = imgNames[i] === sheet["A" + (i + 1)].v ? sheet["B" + (i + 1)].v : "";
 		}
 
 		{ // build html and apply foundation
@@ -146,7 +136,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 							"width" : imgSizes[k].width,
 							"height" : imgSizes[k].height,
 							"usemap" : "#" + mapName,
-							"alt" : alts[k]
+							"alt" : alts[k] || ""
 						});
 						if(temp > 960) {
 							$img.attr("class", "xtraWideImg");
@@ -169,7 +159,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 							"width" : imgSizes[k].width,
 							"height" : imgSizes[k].height,
 							"usemap" : "#" + mapName,
-							"alt" : alts[k]
+							"alt" : alts[k] || ""
 						});
 						$innerUl.append('<li>' + $img + '<map name="' + mapName + '" id="' + mapName + '" data-row-num="row-' + (i + 1) + '"/></li>');
 					}
@@ -182,7 +172,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 	});
 
 	grunt.registerTask("execute", function() {
-		grunt.task.requires("build");
+		this.requires("build");
 		grunt.file.write(folder + "/homepage.html", $.html());
 		grunt.config.set("prettify.one.src", folder + "/homepage.html");
 		grunt.config.set("prettify.one.dest", folder + "/homepage.html");
@@ -191,7 +181,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 	});
 
 	grunt.registerTask("update", function() {
-		grunt.task.requires("check");
+		this.requires("check");
 
 		$ = cheerio.load(grunt.file.read(folder + "/homepage.html"));
 
@@ -201,7 +191,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 			var $this0 = $(this),
 				map = $this0.attr("name"),
 				row = $this0.data("row-num"),
-				cm_re = "cm_re";// "cm_re=${hpDate}-_-HOMEPAGE_INCLUDE_1_" + row + "-_-CATEGORY%20--%205125%20--%20";
+				cm_re = "cm_re=", temp;// "cm_re=${hpDate}-_-HOMEPAGE_INCLUDE_1_" + row + "-_-CATEGORY%20--%205125%20--%20";
 
 			$this0.children().each(function() {
 				var $this1 = $(this),
@@ -214,7 +204,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 					grunt.log.writeln("WARNING: 'href' empty for area with coords : " ["yellow"] + $this1.attr("coords") ["yellow"] + ". Skipping current tag." ["yellow"]);
 					return true;
 				}
-				if(typeof alt === "undefined") {
+				if(typeof alt === "undefined" || alt === "") {
 					grunt.log.writeln("WARNING: 'alt' empty for area with coords : " ["yellow"] + $this1.attr("coords") ["yellow"] + ". Skipping current tag." ["yellow"]);
 					return true;
 				}
@@ -226,20 +216,21 @@ inner:		for(j = 0; j < columns[i]; j++) {
 
 					newHref = hrefStr.length <= 5 ? SL.catUrl + href + "&" + cm_re + hrefStr + ":" + alt : js1 + hrefStr + "&" + cm + js2;
 				} else if(/^\//.test(href)) { // begins with /
-					newHref = hasHash() || "${baseUrl}" + href + (~href.indexOf("?") ? "&" : "?") + cm;
+					newHref = hasHash(1) || "${baseUrl}" + href + (~href.indexOf("?") ? "&" : "?") + cm;
 				} else if(href === "standard") {
-					newHref = SL[alt.replace(/\s/g, "")] + cm_re + SL[alt] + ":" + alt;
+					temp = SL[alt.replace(/\s/g, "")];
+					newHref = SL.catUrl + temp + "&" + cm_re + temp + ":" + alt;
 				} else if(/www(1)?.macys.com/.test(href)) {
-					newHref = "${baseUrl}" + href.substring(href.indexOf(".com") + 4) + (~href.indexOf("?") ? "&" : "?") + cm;
+					newHref = hasHash(2) || "${baseUrl}" + href.substring(href.indexOf(".com") + 4) + (~href.indexOf("?") ? "&" : "?") + cm;
 				} else {
-					newHref = href + (~href.indexOf("?") ? "&" : "?") + cm;
+					newHref = hasHash(3) || href + (~href.indexOf("?") ? "&" : "?") + cm;
 				}
 
 				$this1.attr("href", newHref);
 				console.log(newHref);
 
-				function hasHash() {
-					var hashIndex, queIndex, index, temp;
+				function hasHash(id) {
+					var hashIndex, queIndex, index;
 
 					if(~(hashIndex = href.indexOf("#"))) {
 						if(~(queIndex = href.indexOf("?"))) {
@@ -249,7 +240,12 @@ inner:		for(j = 0; j < columns[i]; j++) {
 							index = hashIndex;
 							temp = "?" + cm;
 						}
-						return "${baseUrl}" + href.substring(0, index) + temp + href.substring(index);
+						temp += href.substring(index);
+						switch(id) {
+							case 1 : return "${baseUrl}" + href.substring(0, index) + temp;
+							case 2 : return "${baseUrl}" + href.substring(href.indexOf(".com") + 4, index) + temp;
+							case 3 : return href.substring(0, index) + temp;
+						}
 					} else {
 						return false;
 					}
@@ -257,5 +253,19 @@ inner:		for(j = 0; j < columns[i]; j++) {
 			});
 		});
 		grunt.file.write(folder + "/updated.html", $.html());
+	});
+
+	grunt.registerTask("clean", function() {
+		var file = grunt.file.read("40816/updated.html"),
+			lines = file.split("\n"),
+			newlines = [],
+			i = lines.length, temp;
+
+		while(--i) {
+			temp = /^(<img|<area).*(?!\/>)$/.test(lines[i].trim()) ? lines[i].replace(/>$/, "/>") : lines[i];
+			if(/&amp;/.test(temp)) temp = temp.replace(/&amp;/g, "&");
+			newlines[i] = temp;
+		}
+		grunt.file.write("40816/new.html", newlines.join("\n"));
 	});
 };
