@@ -1,0 +1,153 @@
+module.exports = function(grunt) {
+	"use strict";
+
+	grunt.registerTask("build", function() {
+		this.requires("check");
+
+		{ // variables
+			var $;
+
+			grunt.config.set("vars.$", ($ = grunt.config.get("vars.cheerio").load("")));
+
+			var folder = grunt.config.get("vars.folder"),
+				sizeOf = require("image-size"),
+				$html = $("<html/>"),
+				$head = $("<head/>"),
+				$style = $("<style/>"),
+				$body = $('<body style="width: 960px; margin: auto"/>'),
+				link = '<link rel="stylesheet" href="../macy-base.css" type="text/css" />',
+				jq = '<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"> </script>',
+				styles = "body.NavAppHomePage #bd {width: 960px !important;border: none !important;line-height: 0px !important;}#globalContentContainer .row div {padding-right: 0;}",
+				columns = [], isRowEven = [], imgNames = [], imgSizes = [], alts = [],
+				floaterSize = null, floaterName,
+				$rowDiv, $innerDiv, $innerUl, $img,
+				i, j, k, sum = 0, rowLen, imgLen, temp, mapName, isExtraWide = false, isBlock = false;
+
+			$.root().append($html);
+			$html.append($head, $body);
+			$head.append(link, jq, $style);
+			$style.append(styles);
+		}
+
+		{ // find images, get size and name
+			grunt.file.recurse(folder + "/images", function(path, root, sub, name) {
+				if(/(\.png|\.jpg|\.jpeg|\.gif)$/.test(name)) {
+					if(/^floater./.test(name)) {
+						floaterName = name;
+						floaterSize = sizeOf(path);
+					} else {
+						imgNames.push(name);
+						imgSizes.push(sizeOf(path));
+					}
+				}
+			});
+			imgLen = imgSizes.length;
+		}
+
+		// floater image code
+		if(grunt.option("floater")) {
+			$body.append(grunt.file.exists("assets/floater/html.txt") ? grunt.file.read("assets/floater/html.txt") : "");
+			$style.append(grunt.file.exists("assets/floater/style.txt") ? grunt.file.read("assets/floater/style.txt") : "");
+			$head.append(grunt.file.exists("assets/floater/script.txt") ? grunt.file.read("assets/floater/script.txt") : "");
+
+			if(floaterSize === null) {
+				grunt.log.writeln("WARNING: Floating parameter set but no floater image found!" ["yellow"]);
+			} else {
+				$("#floatingImage").attr({
+					"src" : "images/" + floaterName,
+					"width" : floaterSize.width,
+					"height" : floaterSize.height
+				});
+			}
+		}
+
+		{ // get rows and columns
+			for(i = 0, j = 0, k = 1; i < imgLen; i++, k++) {
+				sum += imgSizes[i].width;
+				if(sum >= 960) {
+					if(k > 1 && sum > 960) {
+						temp = "";
+						for(j = i - k + 1; j <= i; j++) temp += ", " + imgNames[j];
+						grunt.log.writeln("One or more images not sliced correctly! [" + temp.substring(2) ["yellow"] + "]");
+					}
+					columns[j++] = k;
+					sum = 0;
+					k = 0;
+				}
+			}
+			sum !== 0 && grunt.fatal("Last image does not fill the full width of the page!" + "\nAre you missing one or more images?\n" ["yellow"]);
+			rowLen = columns.length;
+		}
+
+		// check what type of foundation class can be applied for each row : "row-column pair" or "block_grid"
+		for(i = 0, k = 0; i < rowLen; i++) {
+	inner:		for(j = 0; j < columns[i]; j++) {
+				temp = imgSizes[k + j].width;
+				if(temp > 960) {
+					j++;
+					break inner;
+				} else if(temp % 60 !== 0) {
+					break inner;
+				}
+			}
+			isRowEven[i] = j === columns[i];
+			k += columns[i];
+		}
+
+		// get excel data
+		if(grunt.option("alt")) {
+			var sheet = require("xlsx").readFile(folder + grunt.config.get("vars.files").altsheet).Sheets["Sheet1"];
+
+			for(i = 0; i < imgLen; i++) alts[i] = imgNames[i] === sheet["A" + (i + 1)].v ? sheet["B" + (i + 1)].v : "";
+		}
+
+		{ // build html and apply foundation
+			for(i = 0, k = 0; i < rowLen; i++) {
+				if(isRowEven[i]) {
+					// apply row-column classes
+					$rowDiv = $('<div class="row" data-row-num="row-' + (i + 1) + '"/>');
+					for(j = 0; j < columns[i]; j++, k++) {
+						temp = imgSizes[k].width;
+						mapName = folder + "_map" + (k + 1);
+						$innerDiv = $('<div class="small-' + (temp <= 960 ? temp / 60 : 16) + ' column"/>');
+						$img = $("<img/>");
+						$img.attr({
+							"src" : "images/" + imgNames[k],
+							"width" : imgSizes[k].width,
+							"height" : imgSizes[k].height,
+							"usemap" : "#" + mapName,
+							"alt" : alts[k] || ""
+						});
+						if(temp > 960) {
+							$img.attr("class", "xtraWideImg");
+							isExtraWide = true;
+						}
+						$innerDiv.append($img, '<map name="' + mapName + '" id="' + mapName + '" data-row-num="row-' + (i + 1) + '"/>');
+						$rowDiv.append($innerDiv);
+					}
+				} else {
+					// apply block_grid class
+					isBlock = true;
+					$rowDiv = $('<div class="row block_grid" data-row-num="row-' + (i + 1) + '"/>');
+					$innerUl = $('<ul class="small-block-grid-' + columns[i] + '"/>');
+					$rowDiv.append($innerUl);
+					for(j = 0; j < columns[i]; j++, k++) {
+						mapName = folder + "_map" + (k + 1);
+						$img = $("<img/>");
+						$img.attr({
+							"src" : "images/" + imgNames[k],
+							"width" : imgSizes[k].width,
+							"height" : imgSizes[k].height,
+							"usemap" : "#" + mapName,
+							"alt" : alts[k] || ""
+						});
+						$innerUl.append('<li>' + $img + '<map name="' + mapName + '" id="' + mapName + '" data-row-num="row-' + (i + 1) + '"/></li>');
+					}
+				}
+				$body.append($rowDiv);
+			}
+			isExtraWide && $style.append(".xtraWideImg {max-width: none !important;margin-left: -50% !important; width: auto !important;} #doc3 {overflow-x: hidden !important; min-width: 960px;}");
+			isBlock && $style.append(grunt.file.exists("assets/block_style.txt") ? grunt.file.read("assets/block_style.txt") : "");
+		}
+	});
+};
