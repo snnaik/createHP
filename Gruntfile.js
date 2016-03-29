@@ -1,7 +1,12 @@
 module.exports = function(grunt) {
 	"use strict";
 
-	var cheerio = require("cheerio"), folder, $;
+	var cheerio = require("cheerio"), folder, $,
+		files = {
+			altsheet: "/altsheet.xlsx",
+			hp1: "/hp_initial.html",
+			hp2: "/hp_final.html"
+		};
 
 	grunt.initConfig({
 		prettify: {
@@ -21,7 +26,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("check", function() {
 		!grunt.option("folder") ? grunt.fatal("Folder parameter missing!\n") : folder = grunt.option("folder").toString();
 		!grunt.file.exists(folder) && grunt.fatal("Folder does not exist!\n");
-		grunt.option("alt") && !grunt.file.exists(folder + "/altsheet.xlsx") && grunt.fatal("'alt' parameter set but no 'altsheet.xlsx' found!\n");
+		grunt.option("alt") && !grunt.file.exists(folder + files.altsheet) && grunt.fatal("'alt' parameter set but no 'altsheet.xlsx' found!\n");
 	});
 
 	grunt.registerTask("build", function() {
@@ -116,7 +121,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 
 		// get excel data
 		if(grunt.option("alt")) {
-			var sheet = require("xlsx").readFile(folder + "/altsheet.xlsx").Sheets["Sheet1"];
+			var sheet = require("xlsx").readFile(folder + files.altsheet).Sheets["Sheet1"];
 
 			for(i = 0; i < imgLen; i++) alts[i] = imgNames[i] === sheet["A" + (i + 1)].v ? sheet["B" + (i + 1)].v : "";
 		}
@@ -173,9 +178,9 @@ inner:		for(j = 0; j < columns[i]; j++) {
 
 	grunt.registerTask("execute", function() {
 		this.requires("build");
-		grunt.file.write(folder + "/homepage.html", $.html());
-		grunt.config.set("prettify.one.src", folder + "/homepage.html");
-		grunt.config.set("prettify.one.dest", folder + "/homepage.html");
+		grunt.file.write(folder + files.hp1, $.html());
+		grunt.config.set("prettify.one.src", folder + files.hp1);
+		grunt.config.set("prettify.one.dest", folder + files.hp1);
 		grunt.loadNpmTasks('grunt-prettify');
 		grunt.task.run('prettify');
 	});
@@ -183,7 +188,7 @@ inner:		for(j = 0; j < columns[i]; j++) {
 	grunt.registerTask("update", function() {
 		this.requires("check");
 
-		$ = cheerio.load(grunt.file.read(folder + "/homepage.html"));
+		$ = cheerio.load(grunt.file.read(folder + files.hp1));
 
 		var SL = require("./assets/standard_linking.js");
 
@@ -191,7 +196,8 @@ inner:		for(j = 0; j < columns[i]; j++) {
 			var $this0 = $(this),
 				map = $this0.attr("name"),
 				row = $this0.data("row-num"),
-				cm_re = "cm_re=", temp;// "cm_re=${hpDate}-_-HOMEPAGE_INCLUDE_1_" + row + "-_-CATEGORY%20--%205125%20--%20";
+				cm_re = "cm_re=${hpDate}-_-HOMEPAGE_INCLUDE_1_" + row + "-_-CATEGORY%20--%205125%20--%20",
+				temp;
 
 			$this0.children().each(function() {
 				var $this1 = $(this),
@@ -252,12 +258,13 @@ inner:		for(j = 0; j < columns[i]; j++) {
 				}
 			});
 		});
-		grunt.file.write(folder + "/updated.html", $.html());
+		grunt.file.write(folder + files.hp2, $.html());
 	});
 
 	grunt.registerTask("clean", function() {
-		var file = grunt.file.read("40816/updated.html"),
-			lines = file.split("\n"),
+		this.requires("update");
+
+		var lines = grunt.file.read(folder + files.hp2).split("\n"),
 			newlines = [],
 			i = lines.length, temp;
 
@@ -266,6 +273,6 @@ inner:		for(j = 0; j < columns[i]; j++) {
 			if(/&amp;/.test(temp)) temp = temp.replace(/&amp;/g, "&");
 			newlines[i] = temp;
 		}
-		grunt.file.write("40816/new.html", newlines.join("\n"));
+		grunt.file.write(folder + files.hp2, newlines.join("\n"));
 	});
 };
