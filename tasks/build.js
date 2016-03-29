@@ -15,9 +15,7 @@ module.exports = function(grunt) {
 				$head = $("<head/>"),
 				$style = $("<style/>"),
 				$body = $('<body style="width: 960px; margin: auto"/>'),
-				link = '<link rel="stylesheet" href="../macy-base.css" type="text/css" />',
-				jq = '<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"> </script>',
-				styles = "body.NavAppHomePage #bd {width: 960px !important;border: none !important;line-height: 0px !important;}#globalContentContainer .row div {padding-right: 0;}",
+				strings = require("../assets/strings.js"),
 				columns = [], isRowEven = [], imgNames = [], imgSizes = [], alts = [],
 				floaterSize = null, floaterName,
 				$rowDiv, $innerDiv, $innerUl, $img,
@@ -25,8 +23,8 @@ module.exports = function(grunt) {
 
 			$.root().append($html);
 			$html.append($head, $body);
-			$head.append(link, jq, $style);
-			$style.append(styles);
+			$head.append(strings.link, strings.jq, $style);
+			$style.append(strings.styles);
 		}
 
 		{ // find images, get size and name
@@ -146,7 +144,7 @@ module.exports = function(grunt) {
 				}
 				$body.append($rowDiv);
 			}
-			isExtraWide && $style.append(".xtraWideImg {max-width: none !important;margin-left: -50% !important; width: auto !important;} #doc3 {overflow-x: hidden !important; min-width: 960px;}");
+			isExtraWide && $style.append(strings.xtraWideCss);
 			isBlock && $style.append(grunt.file.exists("assets/block_style.txt") ? grunt.file.read("assets/block_style.txt") : "");
 		}
 	});
