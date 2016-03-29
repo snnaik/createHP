@@ -5,7 +5,8 @@ module.exports = function(grunt) {
 		files = {
 			altsheet: "/altsheet.xlsx",
 			hp1: "/hp_initial.html",
-			hp2: "/hp_final.html"
+			hp2: "/hp_final.html",
+			hp_txt: "/hp_final.txt"
 		};
 
 	grunt.initConfig({
@@ -35,9 +36,10 @@ module.exports = function(grunt) {
 			files: files
 		}
 	});
+
 	grunt.loadTasks("tasks");
 	grunt.registerTask("template", ["check", "build", "execute"]);
-	grunt.registerTask("reformat", ["check", "update", "clean"]);
+	grunt.registerTask("reformat", ["check", "update", "extract", "clean", "finalize"]);
 
 	grunt.registerTask("check", function() {
 		!grunt.option("folder") ? grunt.fatal("Folder parameter missing!\n") : grunt.config.set("vars.folder", (folder = grunt.option("folder").toString()));
@@ -56,6 +58,17 @@ module.exports = function(grunt) {
 		grunt.task.run('prettify');
 	});
 
+	grunt.registerTask("extract", function() {
+		var imgAlt = "", areaAlt = "", $ = grunt.config.get("vars.cheerio").load(grunt.file.read(folder + files.hp2));
+		$("img").each(function() {
+			imgAlt += $(this).attr("alt") + "\n";
+		});
+		$("area").each(function() {
+			areaAlt += $(this).attr("alt") + "\n";
+		});
+		grunt.file.write(folder + files.hp_txt, imgAlt, areaAlt);
+	});
+
 	grunt.registerTask("clean", function() {
 		this.requires("update");
 
@@ -70,9 +83,15 @@ module.exports = function(grunt) {
 			newlines[i] = temp;
 		}
 		grunt.file.write(folder + files.hp2, newlines.join("\n"));
+	});
+
+	grunt.registerTask("finalize", function() {
 		grunt.config.set("imgmin_src", [folder + "/images/*.{png,jpg,jpeg,gif}"]);
 		grunt.config.set("imagemin.dynamic.files[0].dest", folder + "/images/");
-		grunt.loadNpmTasks('grunt-contrib-imagemin');
-		grunt.task.run('imagemin');
+		grunt.loadNpmTasks("grunt-contrib-imagemin");
+		grunt.task.run("imagemin");
+		grunt.config.set("spell.files", folder + files.hp_txt);
+		grunt.loadNpmTasks("grunt-spell");
+		grunt.task.run("spell");
 	});
 };
