@@ -66,7 +66,7 @@ module.exports = function(grunt) {
 		$("area").each(function() {
 			areaAlt += $(this).attr("alt") + "\n";
 		});
-		grunt.file.write(folder + files.hp_txt, imgAlt, areaAlt);
+		grunt.file.write(folder + files.hp_txt, imgAlt + areaAlt);
 	});
 
 	grunt.registerTask("clean", function() {
