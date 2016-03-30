@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 			newlines = [],
 			i = lines.length, temp;
 
-		while(--i) {
+		while(i--) {
 			temp = /^(<img|<area).*(?!\/>)$/.test(lines[i].trim()) ? lines[i].replace(/>$/, "/>") : lines[i];
 			if(/&amp;/.test(temp)) temp = temp.replace(/&amp;/g, "&");
 			if(/(&apos;|&quot;|&#x2019;)/.test(temp)) temp = temp.replace(/(&apos;|&quot;|&#x2019;)/g, "'");
