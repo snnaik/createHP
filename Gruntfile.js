@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask("extract", function() {
-		var imgAlt = "", areaAlt = "", $ = grunt.config.get("vars.cheerio").load(grunt.file.read(folder + files.hp2));
+		var imgAlt = "", areaAlt = "", $ = grunt.config.get("vars.$");
 		$("img").each(function() {
 			imgAlt += $(this).attr("alt") + "\n";
 		});
@@ -79,7 +79,7 @@ module.exports = function(grunt) {
 		while(--i) {
 			temp = /^(<img|<area).*(?!\/>)$/.test(lines[i].trim()) ? lines[i].replace(/>$/, "/>") : lines[i];
 			if(/&amp;/.test(temp)) temp = temp.replace(/&amp;/g, "&");
-			if(/&apos;/.test(temp)) temp = temp.replace(/&apos;/g, "'");
+			if(/(&apos;|&quot;|&#x2019;)/.test(temp)) temp = temp.replace(/(&apos;|&quot;|&#x2019;)/g, "'");
 			newlines[i] = temp;
 		}
 		grunt.file.write(folder + files.hp2, newlines.join("\n"));
@@ -88,10 +88,12 @@ module.exports = function(grunt) {
 	grunt.registerTask("finalize", function() {
 		grunt.config.set("imgmin_src", [folder + "/images/*.{png,jpg,jpeg,gif}"]);
 		grunt.config.set("imagemin.dynamic.files[0].dest", folder + "/images/");
-		grunt.loadNpmTasks("grunt-contrib-imagemin");
-		grunt.task.run("imagemin");
 		grunt.config.set("spell.files", folder + files.hp_txt);
+
+		grunt.loadNpmTasks("grunt-contrib-imagemin");
 		grunt.loadNpmTasks("grunt-spell");
+
+		grunt.task.run("imagemin");
 		grunt.task.run("spell");
 	});
 };

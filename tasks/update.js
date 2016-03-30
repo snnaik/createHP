@@ -78,6 +78,7 @@ module.exports = function(grunt) {
 				}
 			});
 		});
+		grunt.config.set("vars.$", $);
 		grunt.file.write(grunt.config.get("vars.folder") + grunt.config.get("vars.files").hp2, $.html());
 	});
 };
