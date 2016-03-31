@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 				columns = [], isRowEven = [], imgNames = [], imgSizes = [], alts = [],
 				floaterSize = null, floaterName,
 				$rowDiv, $innerDiv, $innerUl, $img,
-				i, j, k, l, sum = 0, rowLen, imgLen, temp, mapName, isExtraWide = false, isBlock = false;
+				i, j, k, l, sum = 0, row, rowLen, imgLen, temp, mapName, isExtraWide = false, isBlock = false;
 
 			$.root().append($html);
 			$html.append($head, $body);
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 			$head.append(grunt.file.exists("assets/floater/script.txt") ? grunt.file.read("assets/floater/script.txt") : "");
 
 			if(floaterSize === null) {
-				grunt.log.writeln("WARNING: Floating parameter set but no floater image found!" ["yellow"]);
+				grunt.log.writeln("Warning: Floating parameter set but no floater image found!" ["yellow"]);
 			} else {
 				$("#floatingImage").attr({
 					"src" : "images/" + floaterName,
@@ -106,9 +106,10 @@ module.exports = function(grunt) {
 
 		{ // build html and apply foundation
 			for(i = 0, k = 0; i < rowLen; i++) {
+				row = 'data-row-num="row_' + (i + 1);
 				if(isRowEven[i]) {
 					// apply row-column classes
-					$rowDiv = $('<div class="row" data-row-num="row-' + (i + 1) + '"/>');
+					$rowDiv = $('<div class="row" ' + row + '"/>');
 					for(j = 0; j < columns[i]; j++, k++) {
 						temp = imgSizes[k].width;
 						mapName = folder + "_map" + (k + 1);
@@ -125,13 +126,13 @@ module.exports = function(grunt) {
 							$img.attr("class", "xtraWideImg");
 							isExtraWide = true;
 						}
-						$innerDiv.append($img, '<map name="' + mapName + '" id="' + mapName + '" data-row-num="row-' + (i + 1) + '"/>');
+						$innerDiv.append($img, '<map name="' + mapName + '" id="' + mapName + '" ' + row + '"/>');
 						$rowDiv.append($innerDiv);
 					}
 				} else {
 					// apply block_grid class
 					isBlock = true;
-					$rowDiv = $('<div class="row block_grid" data-row-num="row-' + (i + 1) + '"/>');
+					$rowDiv = $('<div class="row block_grid" ' + row + '"/>');
 					$innerUl = $('<ul class="small-block-grid-' + columns[i] + '"/>');
 					$rowDiv.append($innerUl);
 					for(j = 0; j < columns[i]; j++, k++) {
@@ -144,7 +145,7 @@ module.exports = function(grunt) {
 							"usemap" : "#" + mapName,
 							"alt" : alts[k] || ""
 						});
-						$innerUl.append('<li>' + $img + '<map name="' + mapName + '" id="' + mapName + '" data-row-num="row-' + (i + 1) + '"/></li>');
+						$innerUl.append('<li>' + $img + '<map name="' + mapName + '" id="' + mapName + '" ' + row + '"/></li>');
 					}
 				}
 				$body.append($rowDiv);

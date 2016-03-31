@@ -24,13 +24,13 @@ module.exports = function(grunt) {
 
 				if(typeof href === "undefined" || href === "#") {
 					if(map !== "scrollingSideAdMap") {
-						grunt.log.writeln("WARNING: 'href' empty. Added 'href_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
+						grunt.log.writeln("Warning: 'href' empty. Added 'href_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
 						$this1.attr("href", "href_missing");
 						return true;
 					}
 				}
 				if(typeof alt === "undefined" || alt === "") {
-					grunt.log.writeln("WARNING: 'alt' empty. Added 'alt_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
+					grunt.log.writeln("Warning: 'alt' empty. Added 'alt_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
 					$this1.attr("alt", "alt_missing");
 					return true;
 				}
@@ -44,8 +44,11 @@ module.exports = function(grunt) {
 				} else if(/^\//.test(href)) { // begins with /
 					newHref = hasHash(1) || "${baseUrl}" + href + (~href.indexOf("?") ? "&" : "?") + cm;
 				} else if(href === "standard") {
-					temp = SL[alt.replace(/\s/g, "")];
-					newHref = SL.catUrl + temp + "&" + cm_re + temp + ":" + alt;
+					if(!(temp = SL[alt.toLowerCase()])) {
+						grunt.log.writeln("Warning: No standard link found for 'alt' : " ["yellow"] + alt ["red"] + " Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
+						return true;
+					}
+					newHref = /^\d+$/.test(temp) ? SL.catUrl + temp + "&" + cm_re + temp + ":" + alt : temp + cm;
 				} else if(/www(1)?.macys.com/.test(href)) {
 					newHref = hasHash(2) || "${baseUrl}" + href.substring(href.indexOf(".com") + 4) + (~href.indexOf("?") ? "&" : "?") + cm;
 				} else {

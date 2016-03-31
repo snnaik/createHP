@@ -77,14 +77,14 @@ module.exports = function(grunt) {
 
 		var lines = grunt.file.read(folder + files.hp2).split("\n"),
 			newlines = [],
-			i = lines.length, temp;
+			i = lines.length, line;
 
 		while(i--) {
-			temp = /^(<img|<area).*(?!\/>)$/.test(lines[i].trim()) ? lines[i].replace(/>$/, "/>") : lines[i];
-			if(/&amp;/.test(temp)) temp = temp.replace(/&amp;/g, "&");
-			if(/(&apos;|&quot;|&#x2019;)/.test(temp)) temp = temp.replace(/(&apos;|&quot;|&#x2019;)/g, "'");
-			if(/&#xA0;/.test(temp)) temp = temp.replace(/&#xA0;/g, " ");
-			newlines[i] = temp;
+			line = /^(<img|<area).*(?!\/>)$/.test(lines[i].trim()) ? lines[i].replace(/>$/, "/>") : lines[i];
+			if(/&amp;/.test(line)) line = line.replace(/&amp;/g, "&");
+			if(/(&apos;|&quot;|&#x2019;)/.test(line)) line = line.replace(/(&apos;|&quot;|&#x2019;)/g, "'");
+			if(/&#xA0;/.test(line)) line = line.replace(/&#xA0;/g, " ");
+			newlines[i] = line;
 		}
 		grunt.file.write(folder + files.hp2, newlines.join("\n"));
 	});
