@@ -96,7 +96,11 @@ module.exports = function(grunt) {
 		if(grunt.option("alt")) {
 			var sheet = require("xlsx").readFile(folder + grunt.config.get("vars.files").altsheet).Sheets["Sheet1"];
 
-			for(i = 0; i < imgLen; i++) alts[i] = imgNames[i] === sheet["A" + (i + 1)].v ? sheet["B" + (i + 1)].v : "";
+			for(i = 0; i < imgLen; i++) {
+				if(sheet.hasOwnProperty("A" + (i + 1)) && sheet.hasOwnProperty("B" + (i + 1))) {
+					alts[i] = imgNames[i] === sheet["A" + (i + 1)].v ? sheet["B" + (i + 1)].v : "";
+				}
+			}
 		}
 
 		{ // build html and apply foundation
