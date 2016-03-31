@@ -59,7 +59,10 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask("extract", function() {
+		this.requires("update");
+
 		var imgAlt = "", areaAlt = "", $ = grunt.config.get("vars.$");
+
 		$("img").each(function() {
 			imgAlt += $(this).attr("alt") + "\n";
 		});
@@ -70,7 +73,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask("clean", function() {
-		this.requires("update");
+		this.requires("extract");
 
 		var lines = grunt.file.read(folder + files.hp2).split("\n"),
 			newlines = [],
@@ -87,6 +90,8 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask("finalize", function() {
+		this.requires("extract");
+
 		grunt.config.set("imgmin_src", [folder + "/images/*.{png,jpg,jpeg,gif}"]);
 		grunt.config.set("imagemin.dynamic.files[0].dest", folder + "/images/");
 		grunt.config.set("spell.files", folder + files.alt);
