@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 				columns = [], isRowEven = [], imgNames = [], imgSizes = [], alts = [],
 				floaterSize = null, floaterName,
 				$rowDiv, $innerDiv, $innerUl, $img,
-				i, j, k, sum = 0, rowLen, imgLen, temp, mapName, isExtraWide = false, isBlock = false;
+				i, j, k, l, sum = 0, rowLen, imgLen, temp, mapName, isExtraWide = false, isBlock = false;
 
 			$.root().append($html);
 			$html.append($head, $body);
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 				if(sum >= 960) {
 					if(k > 1 && sum > 960) {
 						temp = "";
-						for(j = i - k + 1; j <= i; j++) temp += ", " + imgNames[j];
+						for(l = i - k + 1; l <= i; l++) temp += ", " + imgNames[l];
 						grunt.log.writeln("One or more images not sliced correctly! [" + temp.substring(2) ["yellow"] + "]");
 					}
 					columns[j++] = k;
@@ -73,7 +73,8 @@ module.exports = function(grunt) {
 					k = 0;
 				}
 			}
-			sum !== 0 && grunt.fatal("Last image does not fill the full width of the page!" + "\nAre you missing one or more images?\n" ["yellow"]);
+			if(temp) return false;
+			sum !== 0 && grunt.fatal("Last row does not fill the full width of the page!" + "\nAre you missing one or more images?\n" ["yellow"]);
 			rowLen = columns.length;
 		}
 
