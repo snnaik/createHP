@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 			altsheet: "/altsheet.xlsx",
 			hp1: "/hp_initial.html",
 			hp2: "/hp_final.html",
-			hp_txt: "/hp_final.txt"
+			alt: "/alt_text.txt"
 		};
 
 	grunt.initConfig({
@@ -66,7 +66,7 @@ module.exports = function(grunt) {
 		$("area").each(function() {
 			areaAlt += $(this).attr("alt") + "\n";
 		});
-		grunt.file.write(folder + files.hp_txt, imgAlt + areaAlt);
+		grunt.file.write(folder + files.alt, imgAlt + areaAlt);
 	});
 
 	grunt.registerTask("clean", function() {
@@ -80,6 +80,7 @@ module.exports = function(grunt) {
 			temp = /^(<img|<area).*(?!\/>)$/.test(lines[i].trim()) ? lines[i].replace(/>$/, "/>") : lines[i];
 			if(/&amp;/.test(temp)) temp = temp.replace(/&amp;/g, "&");
 			if(/(&apos;|&quot;|&#x2019;)/.test(temp)) temp = temp.replace(/(&apos;|&quot;|&#x2019;)/g, "'");
+			if(/&#xA0;/.test(temp)) temp = temp.replace(/&#xA0;/g, " ");
 			newlines[i] = temp;
 		}
 		grunt.file.write(folder + files.hp2, newlines.join("\n"));
@@ -88,7 +89,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("finalize", function() {
 		grunt.config.set("imgmin_src", [folder + "/images/*.{png,jpg,jpeg,gif}"]);
 		grunt.config.set("imagemin.dynamic.files[0].dest", folder + "/images/");
-		grunt.config.set("spell.files", folder + files.hp_txt);
+		grunt.config.set("spell.files", folder + files.alt);
 
 		grunt.loadNpmTasks("grunt-contrib-imagemin");
 		grunt.loadNpmTasks("grunt-spell");
