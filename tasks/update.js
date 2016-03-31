@@ -53,7 +53,6 @@ module.exports = function(grunt) {
 				}
 
 				$this1.attr("href", newHref);
-				//console.log(newHref);
 
 				function hasHash(id) {
 					var hashIndex, queIndex, index;
