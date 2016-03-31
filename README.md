@@ -7,7 +7,7 @@ In your terminal, navigate to the directory where you'd like to copy this repo. 
 
 ### HOW TO USE
 #### 1. Generate HTML boilerplate for Homepage
-This task generates a complete HTML page with the necessary styles and foundation layout for all of your sliced images. It runs on the these image file types: `png, jpg, jpeg, gif`. Use the following command to run this task:
+This task generates a complete HTML page with the necessary styles and foundation layout for all of your sliced images. It runs on these image file types: `png, jpg, jpeg, gif`. Use the following command to run this task:
 * `grunt template --folder=folder_name [--floater=1] [--alt=1]`
 
 ##### Options
