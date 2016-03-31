@@ -7,7 +7,7 @@ In your terminal, navigate to the directory where you'd like to copy this repo. 
 
 ### HOW TO USE
 #### 1. Generate HTML boilerplate for Homepage
-Description : This task generates a complete HTML page with the necessary styles and foundation layout for all of your sliced images. It runs on the these image file types: `png, jpg, jpeg, gif`. Use the following command to run this task:
+This task generates a complete HTML page with the necessary styles and foundation layout for all of your sliced images. It runs on the these image file types: `png, jpg, jpeg, gif`. Use the following command to run this task:
 * `grunt template --folder=folder_name [--floater=1] [--alt=1]`
 
 ##### Options
@@ -21,5 +21,5 @@ Description : This task generates a complete HTML page with the necessary styles
   * The above information must be in the first sheet named `Sheet1`.
 
 #### 2. Update links and coremetrics and check for spelling errors
-Description : This task updates links based on pre-defined criteria for various types of links. It adds necessary coremetrics to links. It optimizes image files and reduces file size, wherever possible. And it performs a spell-check on all `alt` text. Use the following command to run this task:
+This task updates links based on pre-defined criteria for various types of links. It adds necessary coremetrics to links. It optimizes image files and reduces file size, wherever possible. And it performs a spell-check on all `alt` text. Use the following command to run this task:
 * `grunt reformat --folder=folder_name`
