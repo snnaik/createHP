@@ -81,7 +81,7 @@ module.exports = function(grunt) {
 
 		// check what type of foundation class can be applied for each row : "row-column pair" or "block_grid"
 		for(i = 0, k = 0; i < rowLen; i++) {
-	inner:		for(j = 0; j < columns[i]; j++) {
+			inner: for(j = 0; j < columns[i]; j++) {
 				temp = imgSizes[k + j].width;
 				if(temp > hpWidth) {
 					j++;
