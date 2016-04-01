@@ -96,12 +96,14 @@ module.exports = function(grunt) {
 
 		// get excel data
 		if(grunt.option("alt")) {
-			var sheet = require("xlsx").readFile(folder + grunt.config.get("vars.files").altsheet).Sheets["Sheet1"];
+			var sheet = require("xlsx").readFile(folder + grunt.config.get("vars.files").altsheet).Sheets["Sheet1"],
+				a, b;
 
-			for(i = 0; i < imgLen; i++) {
-				if(sheet["A" + (i + 1)] && sheet["B" + (i + 1)]) {
-					alts[i] = imgNames[i] === sheet["A" + (i + 1)].v ? sheet["B" + (i + 1)].v : "";
-				}
+			i = imgLen;
+			while(i) {
+				if((a = sheet["A" + i]) && (b = sheet["B" + i])) {
+					alts[--i] = imgNames[i] === a.v ? b.v : "";
+				} else i--;
 			}
 		}
 
