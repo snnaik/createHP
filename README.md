@@ -24,7 +24,7 @@ This task generates a complete HTML page with the necessary styles and foundatio
 ##### Options
 * Specify the `floater` parameter if there is a floating side ad on the homepage.
   * `grunt template --folder=folder_name --floater=1`
-  * This parameter requires an image file, the name of which begins with the text `floater`
+  * This parameter requires an image file, the name of which must begin with the text `floater`
 * Specify the `alt` parameter if there is an excel sheet containing the alt text for images
   * `grunt template --folder=folder_name --alt=1`
   * This parameter requires an `altsheet.xlsx` excel file. (See an example file in the `Sample` folder above)
