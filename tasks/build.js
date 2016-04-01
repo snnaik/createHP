@@ -9,12 +9,13 @@ module.exports = function(grunt) {
 
 			grunt.config.set("vars.$", ($ = grunt.config.get("vars.cheerio").load("")));
 
-			var folder = grunt.config.get("vars.folder"),
+			var hpWidth = 960,
+				folder = grunt.config.get("vars.folder"),
 				sizeOf = require("image-size"),
 				$html = $("<html/>"),
 				$head = $("<head/>"),
 				$style = $("<style/>"),
-				$body = $('<body style="width: 960px; margin: auto"/>'),
+				$body = $('<body style="width: ' + hpWidth + 'px; margin: auto"/>'),
 				strings = require("../assets/strings.js"),
 				columns = [], isRowEven = [], imgNames = [], imgSizes = [], alts = [],
 				floaterSize = null, floaterName,
@@ -62,8 +63,8 @@ module.exports = function(grunt) {
 		{ // get rows and columns
 			for(i = 0, j = 0, k = 1; i < imgLen; i++, k++) {
 				sum += imgSizes[i].width;
-				if(sum >= 960) {
-					if(k > 1 && sum > 960) {
+				if(sum >= hpWidth) {
+					if(k > 1 && sum > hpWidth) {
 						temp = "";
 						for(l = i - k + 1; l <= i; l++) temp += ", " + imgNames[l];
 						grunt.log.writeln("One or more images not sliced correctly! [" + temp.substring(2) ["yellow"] + "]");
@@ -82,7 +83,7 @@ module.exports = function(grunt) {
 		for(i = 0, k = 0; i < rowLen; i++) {
 	inner:		for(j = 0; j < columns[i]; j++) {
 				temp = imgSizes[k + j].width;
-				if(temp > 960) {
+				if(temp > hpWidth) {
 					j++;
 					break inner;
 				} else if(temp % 60 !== 0) {
@@ -106,14 +107,14 @@ module.exports = function(grunt) {
 
 		{ // build html and apply foundation
 			for(i = 0, k = 0; i < rowLen; i++) {
-				row = 'data-row-num="row_' + (i + 1);
+				row = 'data-row-num="row_' + (i + 1) + '"';
 				if(isRowEven[i]) {
 					// apply row-column classes
-					$rowDiv = $('<div class="row" ' + row + '"/>');
+					$rowDiv = $('<div class="row" ' + row + '/>');
 					for(j = 0; j < columns[i]; j++, k++) {
 						temp = imgSizes[k].width;
 						mapName = folder + "_map" + (k + 1);
-						$innerDiv = $('<div class="small-' + (temp <= 960 ? temp / 60 : 16) + ' column"/>');
+						$innerDiv = $('<div class="small-' + (temp <= hpWidth ? temp / 60 : 16) + ' column"/>');
 						$img = $("<img/>");
 						$img.attr({
 							"src" : "images/" + imgNames[k],
@@ -122,17 +123,17 @@ module.exports = function(grunt) {
 							"usemap" : "#" + mapName,
 							"alt" : alts[k] || ""
 						});
-						if(temp > 960) {
+						if(temp > hpWidth) {
 							$img.attr("class", "xtraWideImg");
 							isExtraWide = true;
 						}
-						$innerDiv.append($img, '<map name="' + mapName + '" id="' + mapName + '" ' + row + '"/>');
+						$innerDiv.append($img, '<map name="' + mapName + '" id="' + mapName + '" ' + row + '/>');
 						$rowDiv.append($innerDiv);
 					}
 				} else {
 					// apply block_grid class
 					isBlock = true;
-					$rowDiv = $('<div class="row block_grid" ' + row + '"/>');
+					$rowDiv = $('<div class="row block_grid" ' + row + '/>');
 					$innerUl = $('<ul class="small-block-grid-' + columns[i] + '"/>');
 					$rowDiv.append($innerUl);
 					for(j = 0; j < columns[i]; j++, k++) {
@@ -145,7 +146,7 @@ module.exports = function(grunt) {
 							"usemap" : "#" + mapName,
 							"alt" : alts[k] || ""
 						});
-						$innerUl.append('<li>' + $img + '<map name="' + mapName + '" id="' + mapName + '" ' + row + '"/></li>');
+						$innerUl.append('<li>' + $img + '<map name="' + mapName + '" id="' + mapName + '" ' + row + '/></li>');
 					}
 				}
 				$body.append($rowDiv);
