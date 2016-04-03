@@ -24,8 +24,7 @@ module.exports = function(grunt) {
 
 			$.root().append($html);
 			$html.append($head, $body);
-			$head.append(strings.link, strings.jq, $style);
-			$style.append(strings.styles);
+			$head.append(strings.link, strings.jq);
 		}
 
 		{ // find images, get size and name
@@ -47,7 +46,7 @@ module.exports = function(grunt) {
 		if(grunt.option("floater")) {
 			$body.append(grunt.file.exists("assets/floater/html.txt") ? grunt.file.read("assets/floater/html.txt") : "");
 			$style.append(grunt.file.exists("assets/floater/style.txt") ? grunt.file.read("assets/floater/style.txt") : "");
-			$head.append(grunt.file.exists("assets/floater/script.txt") ? grunt.file.read("assets/floater/script.txt") : "");
+			$head.append($style, grunt.file.exists("assets/floater/script.txt") ? grunt.file.read("assets/floater/script.txt") : "");
 
 			if(floaterSize === null) {
 				grunt.log.writeln("Warning: Floating parameter set but no floater image found!" ["yellow"]);
@@ -154,7 +153,7 @@ module.exports = function(grunt) {
 				$body.append($rowDiv);
 			}
 			isExtraWide && $style.append(strings.xtraWideCss);
-			isBlock && $style.append(grunt.file.exists("assets/block_style.txt") ? grunt.file.read("assets/block_style.txt") : "");
+			isBlock && $head.append($style) && $style.append(strings.blockCss);
 		}
 	});
 };
