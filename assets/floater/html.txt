@@ -2,5 +2,5 @@
 	<img id="floatingImage" usemap="#scrollingSideAdMap" border="0" alt=""/>
 </div>
 <map name="scrollingSideAdMap" id="scrollingSideAdMap">
-	<area shape="circle" coords="215,14,14" alt="close" href="#"/>
+	<area shape="circle" coords="215,14,14" alt="close"/>
 </map>

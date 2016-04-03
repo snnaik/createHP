@@ -5,7 +5,6 @@ module.exports = function(grunt) {
 		files = {
 			altsheet: "/altsheet.xlsx",
 			hp1: "/hp_initial.html",
-			hp2: "/hp_final.html",
 			alt: "/alt_text.txt"
 		};
 
@@ -32,8 +31,7 @@ module.exports = function(grunt) {
 			}
 		},
 		vars: {
-			cheerio: require("cheerio"),
-			files: files
+			cheerio: require("cheerio")
 		}
 	});
 
@@ -43,7 +41,12 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("check", function() {
 		!grunt.option("folder") ? grunt.fatal("Folder parameter missing!\n") : grunt.config.set("vars.folder", (folder = grunt.option("folder").toString()));
-		!grunt.file.exists(folder) && grunt.fatal("Folder does not exist!\n");
+		if(!grunt.file.exists(folder)) {
+			grunt.fatal("Folder does not exist!\n")
+		} else {
+			files.hp2 = "/" + folder + "_hp.jsp";
+			grunt.config.set("vars.files", files);
+		}
 		grunt.option("alt") && !grunt.file.exists(folder + files.altsheet) && grunt.fatal("'alt' parameter set but no 'altsheet.xlsx' found!\n");
 	});
 
@@ -84,12 +87,13 @@ module.exports = function(grunt) {
 			if(/&amp;/.test(line)) line = line.replace(/&amp;/g, "&");
 			if(/(&apos;|&quot;|&#x2019;)/.test(line)) line = line.replace(/(&apos;|&quot;|&#x2019;)/g, "'");
 			if(/&#xA0;/.test(line)) line = line.replace(/&#xA0;/g, " ");
+			line = line.replace(/^\t{1,2}/, "");
 			newlines[i] = line;
 		}
 		grunt.file.write(folder + files.hp2, newlines.join("\n"));
 	});
 
-	grunt.registerTask("finalize", function() {
+	grunt.registerTask("finalize", function() { return true;
 		this.requires("extract");
 
 		grunt.config.set("imgmin_src", [folder + "/images/*.{png,jpg,jpeg,gif}"]);

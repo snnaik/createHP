@@ -96,7 +96,7 @@ module.exports = function(grunt) {
 
 		// get excel data
 		if(grunt.option("alt")) {
-			var sheet = require("xlsx").readFile(folder + grunt.config.get("vars.files").altsheet).Sheets["Sheet1"],
+			var sheet = require("xlsx").readFile(folder + grunt.config.get("vars.files.altsheet")).Sheets["Sheet1"],
 				a, b;
 
 			i = imgLen;

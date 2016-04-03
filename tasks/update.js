@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("update", function() {
 		this.requires("check");
 
-		var $ = grunt.config.get("vars.cheerio").load(grunt.file.read(grunt.config.get("vars.folder") + grunt.config.get("vars.files").hp1));
+		var $ = grunt.config.get("vars.cheerio").load(grunt.file.read(grunt.config.get("vars.folder") + grunt.config.get("vars.files.hp1")));
 
 		var SL = require("../assets/standard_linking.js");
 
@@ -23,11 +23,10 @@ module.exports = function(grunt) {
 					newHref, hrefStr, js1, js2;
 
 				if(typeof href === "undefined" || href === "#") {
-					if(map !== "scrollingSideAdMap") {
-						grunt.log.writeln("Warning: 'href' empty. Added 'href_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
-						$this1.attr("href", "href_missing");
-						return true;
-					}
+					if(map === "scrollingSideAdMap") return true;
+					grunt.log.writeln("Warning: 'href' empty. Added 'href_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
+					$this1.attr("href", "href_missing");
+					return true;
 				}
 				if(typeof alt === "undefined" || alt === "") {
 					grunt.log.writeln("Warning: 'alt' empty. Added 'alt_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
@@ -81,6 +80,6 @@ module.exports = function(grunt) {
 			});
 		});
 		grunt.config.set("vars.$", $);
-		grunt.file.write(grunt.config.get("vars.folder") + grunt.config.get("vars.files").hp2, $.html());
+		grunt.file.write(grunt.config.get("vars.folder") + grunt.config.get("vars.files.hp2"), $("head").html() + $("body").html());
 	});
 };
