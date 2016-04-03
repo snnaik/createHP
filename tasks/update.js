@@ -4,9 +4,9 @@ module.exports = function(grunt) {
 	grunt.registerTask("update", function() {
 		this.requires("check");
 
-		var $ = grunt.config.get("vars.cheerio").load(grunt.file.read(grunt.config.get("vars.folder") + grunt.config.get("vars.files.hp1")));
-
-		var SL = require("../assets/standard_linking.js");
+		var $ = grunt.config.get("vars.cheerio").load(grunt.file.read(grunt.config.get("vars.folder") + grunt.config.get("vars.files.hp1"))),
+			SL = require("../assets/standard_linking.js"),
+			baseUrl = "${baseUrl}";
 
 		$("map").each(function() {
 			var $this0 = $(this),
@@ -36,12 +36,12 @@ module.exports = function(grunt) {
 
 				if(/^\d+$/.test(href)) { // all digits
 					hrefStr = href.toString();
-					js1 = "javascript:pop('${baseUrl}/popup.ognc?popupID=";
+					js1 = "javascript:pop('" + baseUrl + "/popup.ognc?popupID=";
 					js2 = "','myDynaPop','scrollbars=yes,width=365,height=600')";
 
 					newHref = hrefStr.length <= 5 ? SL.catUrl + href + "&" + cm_re + hrefStr + ":" + alt : js1 + hrefStr + "&" + cm + js2;
 				} else if(/^\//.test(href)) { // begins with /
-					newHref = hasHash(1) || "${baseUrl}" + href + (~href.indexOf("?") ? "&" : "?") + cm;
+					newHref = hasHash(1) || baseUrl + href + (~href.indexOf("?") ? "&" : "?") + cm;
 				} else if(href === "standard") {
 					if(!(temp = SL[alt.toLowerCase()])) {
 						grunt.log.writeln("Warning: No standard link found for 'alt' : " ["yellow"] + alt ["red"] + " Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 					}
 					newHref = /^\d+$/.test(temp) ? SL.catUrl + temp + "&" + cm_re + temp + ":" + alt : temp + cm;
 				} else if(/www(1)?.macys.com/.test(href)) {
-					newHref = hasHash(2) || "${baseUrl}" + href.substring(href.indexOf(".com") + 4) + (~href.indexOf("?") ? "&" : "?") + cm;
+					newHref = hasHash(2) || baseUrl + href.substring(href.indexOf(".com") + 4) + (~href.indexOf("?") ? "&" : "?") + cm;
 				} else {
 					newHref = hasHash(3) || href + (~href.indexOf("?") ? "&" : "?") + cm;
 				}
@@ -69,8 +69,8 @@ module.exports = function(grunt) {
 						}
 						temp += href.substring(index);
 						switch(id) {
-							case 1 : return "${baseUrl}" + href.substring(0, index) + temp;
-							case 2 : return "${baseUrl}" + href.substring(href.indexOf(".com") + 4, index) + temp;
+							case 1 : return baseUrl + href.substring(0, index) + temp;
+							case 2 : return baseUrl + href.substring(href.indexOf(".com") + 4, index) + temp;
 							case 3 : return href.substring(0, index) + temp;
 						}
 					} else {
@@ -80,6 +80,5 @@ module.exports = function(grunt) {
 			});
 		});
 		grunt.config.set("vars.$", $);
-		grunt.file.write(grunt.config.get("vars.folder") + grunt.config.get("vars.files.hp2"), $("head").html() + $("body").html());
 	});
 };

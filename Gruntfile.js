@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 
 	grunt.loadTasks("tasks");
 	grunt.registerTask("template", ["check", "build", "execute"]);
-	grunt.registerTask("reformat", ["check", "update", "extract", "clean", "finalize"]);
+	grunt.registerTask("reformat", ["check", "update", "jsp", "extract", "clean", "finalize"]);
 
 	grunt.registerTask("check", function() {
 		!grunt.option("folder") ? grunt.fatal("Folder parameter missing!\n") : grunt.config.set("vars.folder", (folder = grunt.option("folder").toString()));
@@ -61,8 +61,23 @@ module.exports = function(grunt) {
 		grunt.task.run('prettify');
 	});
 
-	grunt.registerTask("extract", function() {
+	grunt.registerTask("jsp", function() {
 		this.requires("update");
+
+		var $ = grunt.config.get("vars.$"),
+			jsp = grunt.file.exists("assets/jsp_directive.txt") ? grunt.file.read("assets/jsp_directive.txt") : "",
+			content = $("head").html();
+
+		if(/macy-base/.test(content)) content = content.replace(/<link.*/, "");
+		if(/jquery/.test(content)) content = content.replace(/<script.*\n.*/, "");
+
+		content = jsp.concat(content, $("body").html());
+
+		grunt.file.write(grunt.config.get("vars.folder") + grunt.config.get("vars.files.hp2"), content);
+	});
+
+	grunt.registerTask("extract", function() {
+		this.requires("jsp");
 
 		var imgAlt = "", areaAlt = "", $ = grunt.config.get("vars.$");
 
