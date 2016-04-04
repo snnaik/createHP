@@ -5,7 +5,8 @@ module.exports = function(grunt) {
 		files = {
 			altsheet: "/altsheet.xlsx",
 			hp1: "/hp_initial.html",
-			alt: "/alt_text.txt"
+			alt: "/alt_text.txt",
+			jsp: "assets/jsp_directive.txt"
 		};
 
 	grunt.initConfig({
@@ -43,23 +44,26 @@ module.exports = function(grunt) {
 		!grunt.option("folder") ? grunt.fatal("Folder parameter missing!\n") : grunt.config.set("vars.folder", (folder = grunt.option("folder").toString()));
 
 		if(!grunt.file.exists(folder)) {
-			grunt.fatal("Folder does not exist!\n")
+			grunt.fatal("Folder does not exist!\n");
 		} else if(!/^\d{8}(_INTL)?/.test(folder)) {
-			grunt.fatal("Folder name invalid!\n" + "Valid format : YYYYMMDD\n" ["white"]);
+			grunt.fatal("Folder name invalid!\n" + "Valid format : YYYYMMDD or YYYYMMDD_INTL\n" ["white"]);
 		} else {
 			files.hp2 = "/" + folder + "_hp.jsp";
 			grunt.config.set("vars.files", files);
 		}
+
 		grunt.option("alt") && !grunt.file.exists(folder + files.altsheet) && grunt.fatal("'alt' parameter set but no 'altsheet.xlsx' found!\n");
 	});
 
 	grunt.registerTask("execute", function() {
 		this.requires("build");
+
 		grunt.file.write(folder + files.hp1, grunt.config.get("vars.$").html());
+
 		grunt.config.set("prettify_files", {
 			src: folder + files.hp1,
 			dest: folder + files.hp1
-		})
+		});
 		grunt.loadNpmTasks('grunt-prettify');
 		grunt.task.run('prettify');
 	});

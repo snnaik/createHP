@@ -16,14 +16,13 @@ module.exports = function(grunt) {
 	grunt.registerTask("jsp", function() {
 		this.requires("prepare");
 
-		var jsp = grunt.file.exists("assets/jsp_directive.txt") ? grunt.file.read("assets/jsp_directive.txt") : "",
+		var jsp = grunt.file.exists(files.jsp) ? grunt.file.read(files.jsp) : "",
 			content = $("head").html(), temp;
 
 		temp = folder.substring(0, 4) + "." + folder.substring(4, 6) + "." + folder.substring(6);
 		jsp = (jsp.replace("hpDateVal", temp.substring(0, 10))).replace("hpAssetsVal", temp.replace(/\./g, "/"));
 
-		if(/macy-base/.test(content)) content = content.replace(/<link.*/, "");
-		if(/jquery/.test(content)) content = content.replace(/<script.*\n.*/, "");
+		content = (content.replace(/<link.*/, "")).replace(/.*jquery.*\n.*/, "");
 
 		$("img").each(function() {
 			temp = $(this).attr("src");
