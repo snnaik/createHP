@@ -1,7 +1,3 @@
-_**Not up-to-date**_
-
--
-
 ### INSTALLATION
 In your terminal, navigate to the directory where you'd like to copy this repo. Then issue the following commands:
 * `git clone https://github.com/snnaik/createHP.git`
@@ -23,6 +19,9 @@ This task generates a complete HTML page with the necessary styles and foundatio
     5. stay connected 960px `img_name_05.jpg`
   * The files **MUST** be named in such a way that when they are sorted in ascending order they match the layout of the page from top to bottom.
   * If, for example, in the above scenario, file #4 is named `img_name_05.jpg` and file #5 is named `img_name_04.jpg`, the task will throw a warning that images are not sliced correctly because `img_name-03.jpg` (480px) and `img_name-04.jpg` (960px) don't add up to 960px.
+* `folder_name` must be in one of the following formats:
+  * **8** characters long in `YYYYMMDD` format. E.g.: `20160420`
+  * **13** characters long in `YYYYMMDD_INTL` format. E.g.: `20160420_INTL`
 
 ##### Options
 * Specify the `floater` parameter if there is a floating side ad on the homepage.
