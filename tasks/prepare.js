@@ -3,20 +3,24 @@ module.exports = function(grunt) {
 
 	var folder, files, $;
 
-	grunt.registerTask("prepare", ["jsp", "extract", "clean"]);
-
-	grunt.registerTask("jsp", function() {
+	grunt.registerTask("prepare", function() {
 		this.requires("update");
-
-		var jsp = grunt.file.exists("assets/jsp_directive.txt") ? grunt.file.read("assets/jsp_directive.txt") : "",
-			content = $("head").html(), temp;
 
 		$ = grunt.config.get("vars.$");
 		files = grunt.config.get("vars.files");
 		folder = grunt.config.get("vars.folder");
 
+		grunt.task.run("jsp", "extract", "clean");
+	});
+
+	grunt.registerTask("jsp", function() {
+		this.requires("prepare");
+
+		var jsp = grunt.file.exists("assets/jsp_directive.txt") ? grunt.file.read("assets/jsp_directive.txt") : "",
+			content = $("head").html(), temp;
+
 		temp = folder.substring(0, 4) + "." + folder.substring(4, 6) + "." + folder.substring(6);
-		jsp = (jsp.replace("hpDateVal", temp)).replace("hpAssetsVal", temp.replace(/\./g, "/"));
+		jsp = (jsp.replace("hpDateVal", temp.substring(0, 10))).replace("hpAssetsVal", temp.replace(/\./g, "/"));
 
 		if(/macy-base/.test(content)) content = content.replace(/<link.*/, "");
 		if(/jquery/.test(content)) content = content.replace(/<script.*\n.*/, "");

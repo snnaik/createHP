@@ -3,11 +3,11 @@
 		var isAdClosed = false,
 			$ad = $("#scrollingSideAd");
 		$(window).scroll(function() {
-			($(this).scrollTop() > 80 && !isAdClosed) ? $ad.fadeIn(): $ad.fadeOut();
+			!isAdClosed && ($(this).scrollTop() > 80 ? $ad.fadeIn(): $ad.fadeOut());
 		});
-		$("#scrollingSideAdMap").find("area").click(function() {
+		$("#scrollingSideAdMap").find("area[alt='close']").click(function() {
 			$ad.hide();
 			isAdClosed = true;
-		})
+		});
 	});
 </script>
