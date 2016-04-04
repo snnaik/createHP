@@ -62,7 +62,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask("finalize", function() { return true;
-		this.requires("extract");
+		this.requires("clean");
 
 		grunt.config.set("imgmin_src", [folder + "/images/*.{png,jpg,jpeg,gif}"]);
 		grunt.config.set("imagemin.dynamic.files[0].dest", folder + "/images/");

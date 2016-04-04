@@ -16,6 +16,10 @@ module.exports = function(grunt) {
 		if(/macy-base/.test(content)) content = content.replace(/<link.*/, "");
 		if(/jquery/.test(content)) content = content.replace(/<script.*\n.*/, "");
 
+		$("img").each(function() {
+			var temp = $(this).attr("src");
+			$(this).attr("src", "${hpAssets}" + temp.substring(temp.indexOf("/") + 1));
+		});
 		content = jsp.concat(content.trim(), $("body").html());
 
 		grunt.file.write(folder + files.hp2, content);
