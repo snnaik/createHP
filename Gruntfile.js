@@ -43,6 +43,8 @@ module.exports = function(grunt) {
 		!grunt.option("folder") ? grunt.fatal("Folder parameter missing!\n") : grunt.config.set("vars.folder", (folder = grunt.option("folder").toString()));
 		if(!grunt.file.exists(folder)) {
 			grunt.fatal("Folder does not exist!\n")
+		} else if(folder.length !== 8 || isNaN(folder)) {
+			grunt.fatal("Folder name invalid!\n" + "Valid format : YYYYMMDD\n" ["white"]);
 		} else {
 			files.hp2 = "/" + folder + "_hp.jsp";
 			grunt.config.set("vars.files", files);

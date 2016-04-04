@@ -8,17 +8,19 @@ module.exports = function(grunt) {
 
 		var $ = grunt.config.get("vars.$"),
 			jsp = grunt.file.exists("assets/jsp_directive.txt") ? grunt.file.read("assets/jsp_directive.txt") : "",
-			content = $("head").html();
+			content = $("head").html(), temp;
 
 		files = grunt.config.get("vars.files");
 		folder = grunt.config.get("vars.folder");
+		temp = folder.substring(0, 4) + "." + folder.substring(4, 6) + "." + folder.substring(6);
+		jsp = (jsp.replace("hpDateVal", temp)).replace("hpAssetsVal", temp.replace(/\./g, "/"));
 
 		if(/macy-base/.test(content)) content = content.replace(/<link.*/, "");
 		if(/jquery/.test(content)) content = content.replace(/<script.*\n.*/, "");
 
 		$("img").each(function() {
-			var temp = $(this).attr("src");
-			$(this).attr("src", "${hpAssets}" + temp.substring(temp.indexOf("/") + 1));
+			temp = $(this).attr("src");
+			$(this).attr("src", "${hpAssets}/" + temp.substring(temp.indexOf("/") + 1));
 		});
 		content = jsp.concat(content.trim(), $("body").html());
 
@@ -45,9 +47,7 @@ module.exports = function(grunt) {
 		var file = grunt.file.read(folder + files.hp2),
 			newlines = [], lines, line, i;
 
-		if(/&amp;/.test(file)) file = file.replace(/&amp;/g, "&");
-		if(/(&apos;|&quot;|&#x2019;)/.test(file)) file = file.replace(/(&apos;|&quot;|&#x2019;)/g, "'");
-		if(/&#xA0;/.test(file)) file = file.replace(/&#xA0;/g, " ");
+		file = ((file.replace(/&amp;/g, "&")).replace(/(&apos;|&quot;|&#x2019;)/g, "'")).replace(/&#xA0;/g, " ");
 
 		lines = file.split("\n");
 		i = lines.length;

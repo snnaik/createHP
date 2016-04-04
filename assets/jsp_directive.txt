@@ -1,3 +1,3 @@
 <jsp:directive.include file="/web20/global/tagLibs.jsp" />
-<c:set var="hpDate" value="2016.04.08" scope="request" />
-<c:set var="hpAssets" value="${baseUrlAssets}/dyn_img/homepage/2016/04/08/" scope="request" />
+<c:set var="hpDate" value="hpDateVal" scope="request" />
+<c:set var="hpAssets" value="${baseUrlAssets}/dyn_img/homepage/hpAssetsVal" scope="request" />
