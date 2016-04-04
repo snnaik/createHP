@@ -38,3 +38,8 @@ This task generates a complete HTML page with the necessary styles and foundatio
 #### 2. Update links and coremetrics and check for spelling errors
 This task updates links based on pre-defined criteria for various types of links. It adds necessary coremetrics to links. It optimizes image files and reduces file size, wherever possible. And it performs a spell-check on all `alt` text. Use the following command to run this task:
 * `grunt reformat --folder=folder_name`
+
+### NEW FEATURES IN PROGRESS
+* Generate jsp as close as possible to the final version uploaded to astra
+* click-to-copy parameter
+* Anything else???
