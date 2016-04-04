@@ -6,7 +6,8 @@ module.exports = function(grunt) {
 			altsheet: "/altsheet.xlsx",
 			hp1: "/hp_initial.html",
 			alt: "/alt_text.txt",
-			jsp: "assets/jsp_directive.txt"
+			jsp: "assets/jsp_directive.txt",
+			body: "/body.txt"
 		};
 
 	grunt.initConfig({

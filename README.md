@@ -29,7 +29,7 @@ This task generates a complete HTML page with the necessary styles and foundatio
   * This parameter requires an image file, the name of which must begin with the text `floater`
 * Specify the `alt` parameter if there is an excel sheet containing the alt text for images
   * `grunt template --folder=folder_name --alt=1`
-  * This parameter requires an `altsheet.xlsx` excel file. (See an example file in the `Sample` folder above)
+  * This parameter requires an `altsheet.xlsx` excel file. (See an example file in the `20160331` sample folder above)
   * The excel file must contain:
     * file names of all images in an ascending order in **column A**,
     * corresponding alt text for images in **column B**.

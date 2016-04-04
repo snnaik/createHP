@@ -31,6 +31,12 @@ module.exports = function(grunt) {
 		content = jsp.concat(content.trim(), $("body").html());
 
 		grunt.file.write(folder + files.hp2, content);
+		grunt.config.set("prettify_files", {
+			src: folder + files.hp2,
+			dest: folder + files.hp2
+		});
+		grunt.loadNpmTasks('grunt-prettify');
+		grunt.task.run('prettify');
 	});
 
 	grunt.registerTask("extract", function() {
@@ -60,7 +66,6 @@ module.exports = function(grunt) {
 
 		while(i--) {
 			line = /^(<img|<area).*(?!\/>)$/.test(lines[i].trim()) ? lines[i].replace(/>$/, "/>") : lines[i];
-			line = line.replace(/^\t{1,2}/, "");
 			newlines[i] = line;
 		}
 		grunt.file.write(folder + files.hp2, newlines.join("\n"));
