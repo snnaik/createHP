@@ -1,17 +1,20 @@
 module.exports = function(grunt) {
-	var folder, files;
+	"use strict";
+
+	var folder, files, $;
 
 	grunt.registerTask("prepare", ["jsp", "extract", "clean"]);
 
 	grunt.registerTask("jsp", function() {
 		this.requires("update");
 
-		var $ = grunt.config.get("vars.$"),
-			jsp = grunt.file.exists("assets/jsp_directive.txt") ? grunt.file.read("assets/jsp_directive.txt") : "",
+		var jsp = grunt.file.exists("assets/jsp_directive.txt") ? grunt.file.read("assets/jsp_directive.txt") : "",
 			content = $("head").html(), temp;
 
+		$ = grunt.config.get("vars.$");
 		files = grunt.config.get("vars.files");
 		folder = grunt.config.get("vars.folder");
+
 		temp = folder.substring(0, 4) + "." + folder.substring(4, 6) + "." + folder.substring(6);
 		jsp = (jsp.replace("hpDateVal", temp)).replace("hpAssetsVal", temp.replace(/\./g, "/"));
 
@@ -30,7 +33,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("extract", function() {
 		this.requires("jsp");
 
-		var imgAlt = "", areaAlt = "", $ = grunt.config.get("vars.$");
+		var imgAlt = "", areaAlt = "";
 
 		$("img").each(function() {
 			imgAlt += $(this).attr("alt") + "\n";

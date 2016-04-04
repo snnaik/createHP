@@ -63,7 +63,7 @@ module.exports = function(grunt) {
 		grunt.task.run('prettify');
 	});
 
-	grunt.registerTask("finalize", function() { return true;
+	grunt.registerTask("finalize", function() {
 		this.requires("clean");
 
 		grunt.config.set("imgmin_src", [folder + "/images/*.{png,jpg,jpeg,gif}"]);
