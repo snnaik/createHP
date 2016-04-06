@@ -24,7 +24,8 @@ module.exports = function(grunt) {
 
 			$.root().append($html);
 			$html.append($head, $body);
-			$head.append(strings.link, strings.jq);
+			$head.append(strings.link, strings.jq, $style);
+			$style.append(strings.genCss);
 		}
 
 		{ // find images, get size and name
