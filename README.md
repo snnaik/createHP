@@ -31,7 +31,7 @@ This task generates a complete HTML page with the necessary styles and foundatio
   * `grunt template --folder=folder_name --alt=1`
   * This parameter requires an `altsheet.xlsx` excel file. (See an example file in the `20160331` sample folder above)
   * The excel file must contain:
-    * file names of all images in an ascending order in **column A**,
+    * file names of all images in an ascending order in **column A**, except the `floater` image,
     * corresponding alt text for images in **column B**.
   * The above information must be in the first sheet named `Sheet1`.
 * Both the options can also be passed to the task as follows:
