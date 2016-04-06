@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 			}
 			if(temp) return false;
 			sum !== 0 && grunt.fatal("Last row does not fill the full width of the page!" + "\nAre you missing one or more images?\n" ["yellow"]);
-			rowLen = columns.length;
+			rowLen = j;
 		}
 
 		// check what type of foundation class can be applied for each row : "row-column pair" or "block_grid"
