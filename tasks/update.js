@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 					newHref, hrefStr, js1, js2;
 
 				if(typeof href === "undefined" || href === "#") {
-					if(map === "scrollingSideAdMap") return true;
+					if(map === "scrollingSideAdMap" && alt === "close") return true;
 					grunt.log.writeln("Warning: 'href' empty. Added 'href_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
 					$this1.attr("href", "href_missing");
 					return true;
