@@ -16,17 +16,15 @@ module.exports = function(grunt) {
 	grunt.registerTask("jsp", function() {
 		this.requires("prepare");
 
-		var jsp = grunt.file.exists(files.jsp) ? grunt.file.read(files.jsp) : "",
-			content = $("head").html(), temp;
-
-		temp = folder.substring(0, 4) + "." + folder.substring(4, 6) + "." + folder.substring(6);
-		jsp = (jsp.replace("hpDateVal", temp.substring(0, 10))).replace("hpAssetsVal", temp.replace(/\./g, "/"));
+		var jsp = '<jsp:directive.include file="/web20/global/tagLibs.jsp" />',
+			content = $("head").html(),
+			hpAssets = "${baseUrlAssets}/dyn_img/homepage/" + folder.substring(0, 4) + "/" + folder.substring(4, 6) + "/" + folder.substring(6), temp;
 
 		content = (content.replace(/<link.*/, "")).replace(/.*jquery.*\n.*/, "");
 
 		$("img").each(function() {
 			temp = $(this).attr("src");
-			$(this).attr("src", "${hpAssets}/" + temp.substring(temp.indexOf("/") + 1));
+			$(this).attr("src", hpAssets + temp.substring(temp.indexOf("/")));
 		});
 		content = jsp.concat(content.trim(), $("body").html());
 

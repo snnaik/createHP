@@ -4,22 +4,23 @@ module.exports = function(grunt) {
 	grunt.registerTask("update", function() {
 		this.requires("check");
 
-		var $ = grunt.config.get("vars.cheerio").load(grunt.file.read(grunt.config.get("vars.folder") + grunt.config.get("vars.files.hp1"))),
+		var folder, $ = grunt.config.get("vars.cheerio").load(grunt.file.read((folder = grunt.config.get("vars.folder")) + grunt.config.get("vars.files.hp1"))),
 			SL = require("../assets/standard_linking.js"),
-			baseUrl = "${baseUrl}";
+			baseUrl = "${baseUrl}",
+			hpDate = folder.substring(0, 4) + "." + folder.substring(4, 6) + "." + folder.substring(6, 8);
 
 		$("map").each(function() {
 			var $this0 = $(this),
 				map = $this0.attr("name"),
 				row = $this0.data("row-num"),
-				cm_re = "cm_re=${hpDate}-_-HOMEPAGE_INCLUDE_1_" + row + "-_-CATEGORY%20--%205125%20--%20",
+				cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + row + "-_-CATEGORY%20--%205125%20--%20",
 				temp;
 
 			$this0.children().each(function() {
 				var $this1 = $(this),
 					href = $this1.attr("href"),
 					alt = $this1.attr("alt"),
-					sym = ~href.indexOf("?") ? "&" : "?";
+					sym = ~href.indexOf("?") ? "&" : "?",
 					cm, newHref, hrefStr, js1, js2;
 
 				if(typeof href === "undefined" || href === "#") {
