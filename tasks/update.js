@@ -19,6 +19,7 @@ module.exports = function(grunt) {
 				var $this1 = $(this),
 					href = $this1.attr("href"),
 					alt = $this1.attr("alt"),
+					sym = ~href.indexOf("?") ? "&" : "?";
 					cm, newHref, hrefStr, js1, js2;
 
 				if(typeof href === "undefined" || href === "#") {
@@ -42,7 +43,7 @@ module.exports = function(grunt) {
 
 					newHref = hrefStr.length <= 5 ? SL.catUrl + href + "&" + cm_re + hrefStr + ":" + alt : js1 + hrefStr + "&" + cm + js2;
 				} else if(/^\//.test(href)) { // begins with /
-					newHref = hasHash(1) || baseUrl + href + (~href.indexOf("?") ? "&" : "?") + cm;
+					newHref = hasHash(1) || baseUrl + href + sym + cm;
 				} else if(href === "standard") {
 					if(!(temp = SL[alt.toLowerCase()])) {
 						grunt.log.writeln("Warning: No standard link found for 'alt' : " ["yellow"] + alt ["red"] + " Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
@@ -50,9 +51,9 @@ module.exports = function(grunt) {
 					}
 					newHref = /^\d+$/.test(temp) ? SL.catUrl + temp + "&" + cm_re + temp + ":" + alt : temp + cm;
 				} else if(/www(1)?.macys.com/.test(href)) {
-					newHref = hasHash(2) || baseUrl + href.substring(href.indexOf(".com") + 4) + (~href.indexOf("?") ? "&" : "?") + cm;
+					newHref = hasHash(2) || baseUrl + href.substring(href.indexOf(".com") + 4) + sym + cm;
 				} else {
-					newHref = hasHash(3) || href + (~href.indexOf("?") ? "&" : "?") + cm;
+					newHref = hasHash(3) || href + sym + cm;
 				}
 
 				$this1.attr("href", newHref);
