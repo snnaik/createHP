@@ -109,7 +109,7 @@ module.exports = function(grunt) {
 
 		{ // build html and apply foundation
 			for(i = 0, k = 0; i < rowLen; i++) {
-				row = 'data-row-num="row_' + (i + 1) + '"';
+				row = 'data-row-num="row_' + ("00" + (i + 1)).slice(-2) + '"';
 				if(isRowEven[i]) {
 					// apply row-column classes
 					$rowDiv = $('<div class="row" ' + row + '/>');
