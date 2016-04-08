@@ -12,8 +12,7 @@ module.exports = function(grunt) {
 		$("map").each(function() {
 			var $this0 = $(this),
 				map = $this0.attr("name"),
-				row = $this0.data("row-num"),
-				cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + (row || "sideAd") + "-_-CATEGORY%20--%205125%20--%20",
+				cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + ($this0.data("row-num") || "sideAd") + "-_-CATEGORY%20--%205125%20--%20",
 				temp;
 
 			$this0.children().each(function() {
