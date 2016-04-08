@@ -20,8 +20,7 @@ module.exports = function(grunt) {
 				var $this1 = $(this),
 					href = $this1.attr("href"),
 					alt = $this1.attr("alt"),
-					sym = ~href.indexOf("?") ? "&" : "?",
-					cm, newHref, hrefStr, js1, js2;
+					sym, cm, newHref, hrefStr, js1, js2;
 
 				if(typeof href === "undefined" || href === "#" || href === "") {
 					if(map === "scrollingSideAdMap" && alt === "close") return true;
@@ -36,6 +35,7 @@ module.exports = function(grunt) {
 				}
 				alt = alt.replace(/[^\w\s]/g, "");
 				cm = cm_re + ":" + alt;
+				sym = ~href.indexOf("?") ? "&" : "?";
 
 				if(/^\d+$/.test(href)) { // all digits
 					hrefStr = href.toString();
