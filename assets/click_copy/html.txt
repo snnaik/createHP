@@ -1,0 +1,8 @@
+<div class="clickCopyDiv">
+	<tiles:insertDefinition name="homepageClickToCopy">
+		<tiles:putAttribute name="creativeFeatureVersion" value="1.0"></tiles:putAttribute>
+		<tiles:putAttribute name="width" value="85"/></tiles:putAttribute>
+		<tiles:putAttribute name="height" value="23"/></tiles:putAttribute>
+		<tiles:putAttribute name="clipboard_text" value="textToReplace"/></tiles:putAttribute>
+	</tiles:insertDefinition>
+</div>

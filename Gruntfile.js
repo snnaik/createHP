@@ -53,6 +53,8 @@ module.exports = function(grunt) {
 		}
 
 		grunt.option("alt") && !grunt.file.exists(folder + files.altsheet) && grunt.fatal("'alt' parameter set but no 'altsheet.xlsx' found!\n");
+
+		grunt.option("c2c") && typeof grunt.option("c2c") === "boolean" && grunt.fatal("ClickToCopy value is invalid!\n");
 	});
 
 	grunt.registerTask("execute", function() {

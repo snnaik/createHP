@@ -43,11 +43,17 @@ module.exports = function(grunt) {
 			imgLen = imgSizes.length;
 		}
 
+		// clickToCopy code
+		if(grunt.option("c2c")) {
+			$body.append(grunt.file.exists("assets/click_copy/html.txt") ? grunt.file.read("assets/click_copy/html.txt").replace("textToReplace", grunt.option("c2c")) : "");
+			$style.append(strings.clickCopyCss);
+		}
+
 		// floater image code
 		if(grunt.option("floater")) {
 			$body.append(grunt.file.exists("assets/floater/html.txt") ? grunt.file.read("assets/floater/html.txt") : "");
 			$style.append(grunt.file.exists("assets/floater/style.txt") ? grunt.file.read("assets/floater/style.txt") : "");
-			$head.append($style, grunt.file.exists("assets/floater/script.txt") ? grunt.file.read("assets/floater/script.txt") : "");
+			$head.append(grunt.file.exists("assets/floater/script.txt") ? grunt.file.read("assets/floater/script.txt") : "");
 
 			if(floaterSize === null) {
 				grunt.log.writeln("Warning: Floating parameter set but no floater image found!" ["yellow"]);
