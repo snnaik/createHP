@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 				var $this1 = $(this),
 					href = $this1.attr("href"),
 					alt = $this1.attr("alt"),
-					sym, cm, newHref, hrefStr, js1, js2;
+					sym, cm, newHref;
 
 				if(typeof href === "undefined" || href === "#" || href === "") {
 					if(map === "scrollingSideAdMap" && alt === "close") return true;
@@ -37,11 +37,14 @@ module.exports = function(grunt) {
 				sym = ~href.indexOf("?") ? "&" : "?";
 
 				if(/^\d+$/.test(href)) { // all digits
-					hrefStr = href.toString();
-					js1 = "javascript:pop('" + baseUrl + "/popup.ognc?popupID=";
-					js2 = "','myDynaPop','scrollbars=yes,width=365,height=600')";
+					var hrefStr = href.toString(),
+						hrefLen = hrefStr.length;
 
-					newHref = hrefStr.length <= 5 ? SL.catUrl + href + "&" + cm_re + hrefStr + ":" + alt : js1 + hrefStr + "&" + cm + js2;
+					if(hrefLen === 6) {
+						newHref = "javascript:pop('" + baseUrl + "/popup.ognc?popupID=" + hrefStr + "&" + cm + "','myDynaPop','scrollbars=yes,width=365,height=600')";
+					} else {
+						newHref = SL[(hrefLen <= 5 ? "catUrl" : "prodUrl")] + href + "&" + cm_re + hrefStr + ":" + alt;
+					}
 				} else if(/^\//.test(href)) { // begins with /
 					newHref = hasHash(1) || baseUrl + href + sym + cm;
 				} else if(href === "standard") {
@@ -53,6 +56,7 @@ module.exports = function(grunt) {
 				} else if(/www(1)?.macys.com/.test(href)) {
 					newHref = hasHash(2) || baseUrl + href.substring(href.indexOf(".com") + 4) + sym + cm;
 				} else {
+					!~href.indexOf("macys.com") && $this1.attr("target", "_blank");
 					newHref = hasHash(3) || href + sym + cm;
 				}
 

@@ -1,5 +1,6 @@
 module.exports = {
 	"catUrl" : "${baseUrl}/catalog/index.ognc?CategoryID=",
+	"prodUrl" : "${baseUrl}/catalog/product/index.ognc?ID=",
 	"beauty" : "669",
 	"bed and bath" : "7495",
 	"big and tall" : "45758",
