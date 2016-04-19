@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 			temp = $(this).attr("src");
 			$(this).attr("src", hpAssets + temp.substring(temp.indexOf("/")));
 		});
-		content = jsp.concat(content.trim(), $("body").html());
+		content = jsp.concat(content.trim(), $("body").html(), "<%-- Grunt Task Ran Successfully --%>");
 
 		grunt.file.write(folder + files.hp2, content);
 		grunt.config.set("prettify_files", {
