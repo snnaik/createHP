@@ -118,7 +118,7 @@ module.exports = function(grunt) {
 				row = 'data-row-num="row_' + ("00" + (i + 1)).slice(-2) + '"';
 				if(isRowEven[i]) {
 					// apply row-column classes
-					$rowDiv = $('<div class="row" ' + row + '/>');
+					$rowDiv = $('<div class="row collapse" ' + row + '/>');
 					for(j = 0; j < columns[i]; j++, k++) {
 						temp = imgSizes[k].width;
 						mapName = folder + "_map" + (k + 1);
@@ -141,7 +141,7 @@ module.exports = function(grunt) {
 				} else {
 					// apply block_grid class
 					isBlock = true;
-					$rowDiv = $('<div class="row block_grid" ' + row + '/>');
+					$rowDiv = $('<div class="row collapse block_grid" ' + row + '/>');
 					$innerUl = $('<ul class="small-block-grid-' + columns[i] + '"/>');
 					$rowDiv.append($innerUl);
 					for(j = 0; j < columns[i]; j++, k++) {
