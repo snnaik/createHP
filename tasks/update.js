@@ -22,11 +22,11 @@ module.exports = function(grunt) {
 					sym, cm, newHref;
 
 				if(typeof href === "undefined" || href === "#" || href === "") {
-					if(map === "scrollingSideAdMap" && alt === "close") return true;
 					grunt.log.writeln("Warning: 'href' empty. Added 'href_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
 					$this1.attr("href", "href_missing");
 					return true;
 				}
+				if(href === "javascript:void();") return true;
 				if(typeof alt === "undefined" || alt === "") {
 					grunt.log.writeln("Warning: 'alt' empty. Added 'alt_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
 					$this1.attr("alt", "alt_missing");
