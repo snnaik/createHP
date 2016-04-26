@@ -27,12 +27,15 @@ module.exports = function(grunt) {
 					$this1.addClass("linkmissing");
 					return true;
 				}
+
 				if(href === "javascript:void();") return true;
+
 				if(typeof alt === "undefined" || alt === "") {
 					grunt.log.writeln("Warning: 'alt' empty. Added 'alt_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
 					$this1.attr("alt", "alt_missing");
 					return true;
 				}
+
 				alt = alt.replace(/[^\w\s]/g, "");
 				cm = cm_re + ":" + alt;
 				sym = ~href.indexOf("?") ? "&" : "?";
@@ -41,22 +44,24 @@ module.exports = function(grunt) {
 					var hrefStr = href.toString(),
 						hrefLen = hrefStr.length;
 
-					if(hrefLen === 6) {
-						newHref = "javascript:pop('" + baseUrl + "/popup.ognc?popupID=" + hrefStr + "&" + cm + "','myDynaPop','scrollbars=yes,width=365,height=600')";
-					} else {
-						newHref = SL[(hrefLen <= 5 ? "catUrl" : "prodUrl")] + href + "&" + cm_re + hrefStr + ":" + alt;
-					}
-				} else if(/^\//.test(href)) { // begins with /
-					newHref = hasHash(1) || baseUrl + href + sym + cm;
-				} else if(href === "standard") {
+					if(hrefLen === 6) newHref = "javascript:pop('" + baseUrl + "/popup.ognc?popupID=" + hrefStr + "&" + cm + "','myDynaPop','scrollbars=yes,width=365,height=600')";
+
+					else newHref = SL[(hrefLen <= 5 ? "catUrl" : "prodUrl")] + href + "&" + cm_re + hrefStr + ":" + alt;
+				}
+
+				else if(/^\//.test(href)) { newHref = hasHash(1) || baseUrl + href + sym + cm; // begins with /
+
+				else if(href === "standard") {
 					if(!(temp = SL[alt.toLowerCase()])) {
 						grunt.log.writeln("Warning: No standard link found for 'alt' : " ["yellow"] + alt ["red"] + " Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
 						return true;
 					}
 					newHref = /^\d+$/.test(temp) ? SL.catUrl + temp + "&" + cm_re + temp + ":" + alt : temp + cm;
-				} else if(/www(1)?.macys.com/.test(href)) {
-					newHref = hasHash(2) || baseUrl + href.substring(href.indexOf(".com") + 4) + sym + cm;
-				} else {
+				}
+
+				else if(/www(1)?.macys.com/.test(href)) newHref = hasHash(2) || baseUrl + href.substring(href.indexOf(".com") + 4) + sym + cm;
+
+				else {
 					!~href.indexOf("macys.com") && $this1.attr("target", "_blank");
 					newHref = hasHash(3) || href + sym + cm;
 				}

@@ -44,11 +44,11 @@ module.exports = function(grunt) {
 	grunt.registerTask("check", function() {
 		!grunt.option("folder") ? grunt.fatal("Folder parameter missing!\n") : grunt.config.set("vars.folder", (folder = grunt.option("folder").toString()));
 
-		if(!grunt.file.exists(folder)) {
-			grunt.fatal("Folder does not exist!\n");
-		} else if(!/^\d{8}(_INTL)?$/.test(folder)) {
-			grunt.fatal("Folder name invalid!\n" + "Valid format : YYYYMMDD or YYYYMMDD_INTL\n" ["white"]);
-		} else {
+		if(!grunt.file.exists(folder)) grunt.fatal("Folder does not exist!\n");
+
+		else if(!/^\d{8}(_INTL)?$/.test(folder)) grunt.fatal("Folder name invalid!\n" + "Valid format : YYYYMMDD or YYYYMMDD_INTL\n" ["white"]);
+
+		else {
 			files.hp2 = "/" + folder + "_hp.jsp";
 			grunt.config.set("vars.files", files);
 		}
