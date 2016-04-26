@@ -45,6 +45,5 @@ This task updates links based on pre-defined criteria for various types of links
 * `grunt reformat --folder=folder_name`
 
 ### NEW FEATURES IN PROGRESS
-* Generate jsp as close as possible to the final version uploaded to astra
-* click-to-copy parameter
+* missing links task
 * Anything else???
