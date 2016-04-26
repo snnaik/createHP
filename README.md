@@ -17,7 +17,7 @@ This task generates a complete HTML page with the necessary styles and foundatio
     3. kids sale 480px `img_name_03.jpg`
     4. shoes sale 480px `img_name_04.jpg`
     5. stay connected 960px `img_name_05.jpg`
-  * The files **MUST** be named in such a way that, when they are sorted in ascending order, they match the layout of the page from top to bottom.
+  * The files **MUST** be named in such a way that, when they are sorted in ascending order, they match the layout of the page from top to bottom and left to right.
   * If, for example, in the above scenario, file #4 is named `img_name_05.jpg` and file #5 is named `img_name_04.jpg`, the task will throw a warning that images are not sliced correctly because `img_name-03.jpg` (480px) and `img_name-04.jpg` (960px) don't add up to 960px.
 * `folder_name` must be in one of the following formats:
   * **8** characters long in `YYYYMMDD` format. E.g.: `20160420`
