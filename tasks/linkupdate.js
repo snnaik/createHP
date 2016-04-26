@@ -1,33 +1,37 @@
 module.exports = function(grunt) {
 	"use strict";
 
-	grunt.registerTask("update", function() {
+	grunt.registerTask("linkupdate", function() {
 		this.requires("check");
 
-		var folder, $ = grunt.config.get("vars.cheerio").load(grunt.file.read((folder = grunt.config.get("vars.folder")) + grunt.config.get("vars.files.hp1"))),
+		var folder = grunt.config.get("vars.folder"),
+			file = grunt.file.read(folder + grunt.config.get("vars.files.hp2")),
+			lines = file.split("\n"),
+			newlines = lines,
+			i = lines.length,
 			SL = require("../assets/standard_linking.js"),
 			baseUrl = "${baseUrl}",
-			hpDate = folder.substring(0, 4) + "." + folder.substring(4, 6) + "." + folder.substring(6, 8);
+			hpDate = folder.substring(0, 4) + "." + folder.substring(4, 6) + "." + folder.substring(6, 8),
+			cheerio = grunt.config.get("vars.cheerio"), $, j, map, row;
 
-		$("map").each(function() {
-			var $this0 = $(this),
-				map = $this0.attr("name"),
-				cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + ($this0.data("row-num") || "row_sideAd") + "-_-CATEGORY%20--%205125%20--%20",
-				temp;
-
-			$this0.children().each(function() {
-				var $this1 = $(this),
+		while(i--) {
+			if(/^\s*<area.*linkmissing/.test(lines[i])) {
+				j = i;
+				while(j--) {
+					if(/^\s*<map/.test(lines[j])) {
+						$ = cheerio.load(lines[j]);
+						map = $("map").attr("name");
+						row = $("map").data("row-num");
+						break;
+					}
+				}
+				$ = cheerio.load(lines[i]);
+				var $this1 = $("area"),
+					cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + (row || "row_sideAd") + "-_-CATEGORY%20--%205125%20--%20",
 					href = $this1.attr("href"),
 					alt = $this1.attr("alt"),
-					sym, cm, newHref;
+					sym, cm, newHref, temp;
 
-				if(typeof href === "undefined" || href === "#" || href === "") {
-					grunt.log.writeln("Warning: 'href' empty. Added 'href_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
-					$this1.attr("href", "href_missing");
-					$this1.addClass("linkmissing");
-					return true;
-				}
-				if(href === "javascript:void();") return true;
 				if(typeof alt === "undefined" || alt === "") {
 					grunt.log.writeln("Warning: 'alt' empty. Added 'alt_missing'. Map : " ["yellow"] + map + " Area : " ["yellow"] + $this1.attr("coords"));
 					$this1.attr("alt", "alt_missing");
@@ -61,7 +65,11 @@ module.exports = function(grunt) {
 					newHref = hasHash(3) || href + sym + cm;
 				}
 
-				$this1.attr("href", newHref);
+				$this1.attr("href", newHref).removeClass("linkmissing");
+				if($this1.attr("class") === "") $this1.removeAttr("class");
+				var line = (($.html().replace(/&amp;/g, "&")).replace(/(&apos;|&quot;|&#x2019;)/g, "'")).replace(/&#xA0;/g, " ");
+				line = /(?!\/>)$/.test(line) ? line.trim().replace(/>$/, "/>") : line;
+				newlines[i] = line;
 
 				function hasHash(id) {
 					var hashIndex, queIndex, index;
@@ -84,8 +92,8 @@ module.exports = function(grunt) {
 						return false;
 					}
 				}
-			});
-		});
-		grunt.config.set("vars.$", $);
+			}
+		}
+		grunt.file.write(folder + "/temp.jsp", newlines.join("\n"));
 	});
 };
