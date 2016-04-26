@@ -34,8 +34,11 @@ This task generates a complete HTML page with the necessary styles and foundatio
     * file names of all images in an ascending order in **column A**, except the `floater` image,
     * corresponding alt text for images in **column B**.
   * The above information must be in the first sheet named `Sheet1`.
-* Both the options can also be passed to the task as follows:
-  * `grunt template --folder=folder_name --floater=1 --alt=1`
+* Specify the `c2c` parameter if there is a click-to-copy functionality in the homepage.
+  * `grunt template --c2c=COPYTEXT`
+  * The above command will generate the click-to-copy functionality with the text **COPYTEXT** copied to the user's clipboard.
+* All three options can also be passed to the task in any order as follows as well as any combination of two of parameters:
+  * `grunt template --folder=folder_name --floater=1 --alt=1 --c2c=COPYTEXT`
 
 #### 2. Update links and coremetrics and check for spelling errors
 This task updates links based on pre-defined criteria for various types of links. It adds necessary coremetrics to links. It optimizes image files and reduces file size, wherever possible. And it performs a spell-check on all `alt` text. Use the following command to run this task:
