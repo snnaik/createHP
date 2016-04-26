@@ -37,7 +37,7 @@ This task generates a complete HTML page with the necessary styles and foundatio
 * Specify the `c2c` parameter if there is a click-to-copy functionality in the homepage.
   * `grunt template --c2c=COPYTEXT`
   * The above command will generate the click-to-copy functionality with the text **COPYTEXT** copied to the user's clipboard.
-* All three options can also be passed to the task in any order as follows as well as any combination of two of parameters:
+* All three options can also be passed to the task in any order as well as any combination of two of parameters.
   * `grunt template --folder=folder_name --floater=1 --alt=1 --c2c=COPYTEXT`
 
 #### 2. Update links and coremetrics and check for spelling errors
