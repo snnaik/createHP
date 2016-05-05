@@ -52,7 +52,7 @@ This task runs on the `jsp` file generated with the `reformat` task.
 
 ##### How to use
 * Replace `href_missing` in the `jsp` file with the new links.
-* Run the following command to update the `jsp` file with new links
+* Run the following command to update the `jsp` file with the new links
   * `grunt relink --folder=folder_name`
 
 ##### Note
