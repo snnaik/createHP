@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 	"use strict";
 
-	var folder, files, $;
+	var folder, files, temp, $;
 
 	grunt.registerTask("prepare", function() {
 		this.requires("update");
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 
 		var jsp = '<jsp:directive.include file="/web20/global/tagLibs.jsp" />',
 			content = $("head").html(),
-			hpAssets = "${baseUrlAssets}/dyn_img/homepage/" + folder.substring(0, 4) + "/" + folder.substring(4, 6) + "/" + folder.substring(6), temp;
+			hpAssets = "${baseUrlAssets}/dyn_img/homepage/" + folder.substring(0, 4) + "/" + folder.substring(4, 6) + "/" + folder.substring(6);
 
 		content = (content.replace(/<link.*/, "")).replace(/.*jquery.*\n.*/, "");
 
@@ -63,7 +63,8 @@ module.exports = function(grunt) {
 		i = lines.length;
 
 		while(i--) {
-			line = /^(<img|<area).*(?!\/>)$/.test(lines[i].trim()) ? lines[i].replace(/>$/, "/>") : lines[i];
+			temp = lines[i];
+			line = /^(<img|<area).*(?!\/>)$/.test(temp.trim()) ? temp.replace(/>$/, "/>") : temp;
 			newlines[i] = line;
 		}
 		grunt.file.write(folder + files.hp2, newlines.join("\n"));

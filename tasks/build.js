@@ -55,9 +55,8 @@ module.exports = function(grunt) {
 			$style.append(grunt.file.exists("assets/floater/style.txt") ? grunt.file.read("assets/floater/style.txt") : "");
 			$head.append(grunt.file.exists("assets/floater/script.txt") ? grunt.file.read("assets/floater/script.txt") : "");
 
-			if(floaterSize === null) {
-				grunt.log.writeln("Warning: Floating parameter set but no floater image found!" ["yellow"]);
-			} else {
+			if(floaterSize === null) grunt.log.writeln("Warning: Floating parameter set but no floater image found!" ["yellow"]);
+			else {
 				$("#floatingImage").attr({
 					"src" : "images/" + floaterName,
 					"width" : floaterSize.width,
@@ -92,9 +91,7 @@ module.exports = function(grunt) {
 				if(temp > hpWidth) {
 					j++;
 					break inner;
-				} else if(temp % 60 !== 0) {
-					break inner;
-				}
+				} else if(temp % 60 !== 0) break inner;
 			}
 			isRowEven[i] = j === columns[i];
 			k += columns[i];
@@ -107,9 +104,8 @@ module.exports = function(grunt) {
 
 			i = imgLen;
 			while(i) {
-				if((a = sheet["A" + i]) && (b = sheet["B" + i])) {
-					alts[--i] = imgNames[i] === a.v ? b.v : "";
-				} else i--;
+				if((a = sheet["A" + i]) && (b = sheet["B" + i])) alts[--i] = imgNames[i] === a.v ? b.v : "";
+				else i--;
 			}
 		}
 
