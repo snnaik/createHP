@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 		vars: {
 			cheerio: require("cheerio")
 		},
-		relink: true
+		relink: false
 	});
 
 	grunt.loadTasks("tasks");
