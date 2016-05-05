@@ -33,13 +33,17 @@ module.exports = function(grunt) {
 		},
 		vars: {
 			cheerio: require("cheerio")
-		}
+		},
+		relink: true
 	});
 
 	grunt.loadTasks("tasks");
 	grunt.registerTask("template", ["check", "build", "execute"]);
 	grunt.registerTask("reformat", ["check", "update", "prepare", "finalize"]);
-	grunt.registerTask("relink", ["check", "linkupdate"]);
+	grunt.registerTask("relink", function() {
+		grunt.config.set("relink", true);
+		grunt.task.run(["check", "update"]);
+	});
 
 	grunt.registerTask("check", function() {
 		!grunt.option("folder") ? grunt.fatal("Folder parameter missing!\n") : grunt.config.set("vars.folder", (folder = grunt.option("folder").toString()));
