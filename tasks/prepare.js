@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 			content = $("head").html(),
 			hpAssets = "${baseUrlAssets}/dyn_img/homepage/" + folder.substring(0, 4) + "/" + folder.substring(4, 6) + "/" + folder.substring(6);
 
-		content = (content.replace(/<link.*/, "")).replace(/.*jquery.*\n.*/, "");
+		content = content.replace(/<link.*/, "").replace(/.*jquery.*\n.*/, "");
 
 		$("img").each(function() {
 			temp = $(this).attr("src");
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
 		var file = grunt.file.read(folder + files.hp2),
 			newlines = [], lines, line, i;
 
-		file = ((file.replace(/&amp;/g, "&")).replace(/(&apos;|&quot;|&#x2019;)/g, "'")).replace(/&#xA0;/g, " ");
+		file = file.replace(/&amp;/g, "&").replace(/(&apos;|&quot;|&#x2019;)/g, "'").replace(/&#xA0;/g, " ");
 
 		lines = file.split("\n");
 		i = lines.length;
