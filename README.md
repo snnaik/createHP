@@ -24,17 +24,17 @@ This task generates a complete HTML page with the necessary styles and foundatio
   * **13** characters long in `YYYYMMDD_INTL` format. E.g.: `20160420_INTL`
 
 ##### Options
-* Specify the `floater` parameter if there is a floating side ad on the homepage.
+* **`floater`** Specify this parameter if there is a floating side ad on the homepage.
   * `grunt template --folder=folder_name --floater=1`
   * This parameter requires an image file, the name of which must begin with the text `floater`
-* Specify the `alt` parameter if there is an excel sheet containing the alt text for images
+* **`alt`** Specify this parameter if there is an excel sheet containing the alt text for images
   * `grunt template --folder=folder_name --alt=1`
   * This parameter requires an `altsheet.xlsx` excel file. (See an example file in the `20160331` sample folder above)
   * The excel file must contain:
     * file names of all images in an ascending order in **column A**, except the `floater` image,
     * corresponding alt text for images in **column B**.
   * The above information must be in the first sheet named `Sheet1`.
-* Specify the `c2c` parameter if there is a click-to-copy functionality in the homepage.
+* **`c2c`** Specify this parameter if there is a click-to-copy functionality in the homepage.
   * `grunt template --c2c=COPYTEXT`
   * The above command will generate the click-to-copy functionality with the text **COPYTEXT** copied to the user's clipboard.
 * All three options can also be passed to the task in any order as well as any combination of two of parameters.
@@ -44,6 +44,17 @@ This task generates a complete HTML page with the necessary styles and foundatio
 This task updates links based on pre-defined criteria for various types of links. It adds necessary coremetrics to links. It optimizes image files and reduces file size, wherever possible. And it performs a spell-check on all `alt` text. Use the following command to run this task:
 * `grunt reformat --folder=folder_name`
 
-### NEW FEATURES IN PROGRESS
-* missing links task
-* Anything else???
+#### 3. Re-run task for missing links
+This task runs on the `jsp` file generated with the `reformat` task.
+##### Use-case
+* When the `reformat` task is run to generate the `jsp` file for the first time, and if there are missing links in the `html` file, the task will output a `jsp` file that contains `href_missing` in the `href` attribute for such `area` tags.
+* When those missing links are available, use this task to update the `jsp` file with the new information.
+
+##### How to use
+* Replace `href_missing` in the `jsp` file with the new links.
+* Run the following command to update the `jsp` file with the new links
+  * `grunt relink --folder=folder_name`
+
+##### Note
+This task **ONLY** updates the missing links. It does **NOT** check for spelling errors.
+
