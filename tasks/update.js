@@ -18,6 +18,7 @@ module.exports = function(grunt) {
 
 			while(i--) {
 				if(/^\s*<area.*linkmissing/.test(lines[i])) {
+					if(/href_missing/.test(lines[i])) continue;
 					j = i;
 					while(j--) {
 						if(/^\s*<map/.test(lines[j])) {
