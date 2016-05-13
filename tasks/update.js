@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 
 					$this1.attr("href", newHref).removeClass("linkmissing");
 					if($this1.attr("class") === "") $this1.removeAttr("class");
-					line = $.html().replace(/&amp;/g, "&").replace(/(&apos;|&quot;|&#x2019;)/g, "'").replace(/&#xA0;/g, " ");
+					line = $.html().replace(/&amp;/g, "&").replace(/(&apos;|&quot;|&#x2019;)/g, "'").replace(/&#xA0;/g, " ").replace(/&#x2014;/g, "-");
 					line = /(?!\/>)$/.test(line) ? line.replace(/>\s*$/, "/>") : line;
 					newlines[i] = line;
 				}

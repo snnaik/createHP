@@ -57,7 +57,7 @@ module.exports = function(grunt) {
 		var file = grunt.file.read(folder + files.hp2),
 			newlines = [], lines, line, i;
 
-		file = file.replace(/&amp;/g, "&").replace(/(&apos;|&quot;|&#x2019;)/g, "'").replace(/&#xA0;/g, " ");
+		file = file.replace(/&amp;/g, "&").replace(/(&apos;|&quot;|&#x2019;)/g, "'").replace(/&#xA0;/g, " ").replace(/&#x2014;/g, "-");
 
 		lines = file.split("\n");
 		i = lines.length;
