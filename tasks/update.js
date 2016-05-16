@@ -30,7 +30,7 @@ module.exports = function(grunt) {
 					}
 					$ = cheerio.load(lines[i]);
 					$this1 = $("area");
-					cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + (row || "row_sideAd") + "-_-CATEGORY%20--%205125%20--%20";
+					cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + (row || "sideAd") + "-_-CATEGORY%20--%205125%20--%20";
 					href = $this1.attr("href");
 					alt = $this1.attr("alt");
 
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 			$("map").each(function() {
 				$this0 = $(this);
 				map = $this0.attr("name");
-				cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + ($this0.data("row-num") || "row_sideAd") + "-_-CATEGORY%20--%205125%20--%20";
+				cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + ($this0.data("row-num") || "sideAd") + "-_-CATEGORY%20--%205125%20--%20";
 
 				$this0.children().each(function() {
 					$this1 = $(this);
