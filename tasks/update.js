@@ -31,7 +31,7 @@ module.exports = function(grunt) {
 					$ = cheerio.load(lines[i]);
 					$this1 = $("area");
 					cm_re = "cm_re=" + hpDate + "-_-HOMEPAGE_INCLUDE_1_" + (row || "sideAd") + "-_-CATEGORY%20--%205125%20--%20";
-					href = $this1.attr("href");
+					href = $this1.attr("href").trim();
 					alt = $this1.attr("alt");
 
 					delegate();
@@ -64,6 +64,7 @@ module.exports = function(grunt) {
 					}
 
 					if(href === "javascript:void();") return true;
+					href = href.trim();
 
 					delegate();
 
